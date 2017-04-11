@@ -1,39 +1,45 @@
 <?php 
+
 	class Productos
 	{
-		public $db, $conn, $productos;
+		//public $db, $conn, $productos;
 
-		public function __construct()
+		/*public function __construct()
 		{
 			require_once('Conexion.php');
 			$this->db = new Conexion();
 			$this->conn = $this->db->Conectar();
 
 			$this->productos = array();
-		}
+		}*/
 
 		public function conn()
 		{
-			return $this->conn;
+			return $this->productos;
 		}
 
 		public function getProductos()
-		{
+		{ 
+			require_once('Conexion.php');
+			$db = new Conexion();
+			$conn = $db->Conectar();
+			
 			$sql = "SELECT * FROM productos";
-			$stmt = $this->conn->prepare($sql);
+			$stmt = $conn->prepare($sql);
 			$stmt->execute();
 
+			$productos = array();
 			while($row = $stmt->fetch(PDO::FETCH_ASSOC))
 			{
-				$this->productos[] = $row;
+				$productos[] = $row;
 			}
 			//print_r($this->productos);
-			return $this->productos;
+			return $productos;
 		}
 	}
 
 	$r = new Productos();
-	$arr = $r->getProductos;
-	var_dump($arr);
+	var_dump($r->getProductos);
+
 
  ?>
