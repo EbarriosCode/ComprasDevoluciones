@@ -3,6 +3,7 @@
 
 	$inst = new Clientes();
 	$Municipios = $inst->getMunicipios();
+	$Departamentos = $inst->getDepartamentos();
 
 	if(isset($_POST['insertar-cliente']))
 	{

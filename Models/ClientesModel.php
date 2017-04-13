@@ -77,6 +77,16 @@
 			$stmt->close();		
 		}
 
+		public function getDepartamentos()
+		{
+			$sql = "SELECT idDepartamento,nombreDepartamento FROM departamento";
+			$stmt = Conexion::Conectar()->prepare($sql);
+			$stmt->execute();
+
+			return $stmt->fetchAll();
+			$stmt->close();
+		}
+
 		public function getMunicipios()
 		{
 			$sql = "SELECT idMunicipio,nombreMunicipio FROM municipio";
@@ -86,7 +96,17 @@
 			return $stmt->fetchAll();
 			$stmt->close();
 		}
-}
 
+		// sobrescribiendo metodo pero con parametros para obtener municipios por ajax
+		public function getMunicipiosAjax($idDepartamento)
+		{
+			$sql = "SELECT idMunicipio,nombreMunicipio FROM municipio WHERE idDepartamento=$idDepartamento";
+			$stmt = Conexion::Conectar()->prepare($sql);
+			$stmt->execute();
+
+			return $stmt->fetchAll();
+			$stmt->close();
+		}
+	}
 
  ?>

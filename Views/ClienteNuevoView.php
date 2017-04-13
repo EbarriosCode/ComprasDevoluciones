@@ -168,16 +168,29 @@
                           <textarea id="direccion" class="form-control col-md-7 col-xs-12" type="number" name="direccion"></textarea>
                         </div>
                       </div>
-                      
                       <div class="form-group">
-                          <label for="marca" class="control-label col-md-3 col-sm-3 col-xs-12">Municipio</label>
+                          <label for="idDepartamento" class="control-label col-md-3 col-sm-3 col-xs-12">Departamento</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select id="idDepartamento" class="form-control col-md-7 col-xs-12" name="idDepartamento" onchange="ajax(this.value)">
+                              <option value="0">Selecciona</option>                            
+                              <?php
+                                foreach($Departamentos as $item){
+                                echo "<option value='$item[idDepartamento]'>".$item['nombreDepartamento']."</option>";
+                                }
+                              ?>
+                          </select>
+                        </div>
+                      </div> 
+
+                        <div class="form-group">
+                          <label for="idMunicipio" class="control-label col-md-3 col-sm-3 col-xs-12">Municipio</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12" id="txtHint">
                           <select id="idMunicipio" class="form-control col-md-7 col-xs-12" name="idMunicipio">
                               <option value="0">Selecciona</option>                            
                               <?php
-                                foreach($Municipios as $item){
-                                  echo "<option value='$item[idMunicipio]'>".$item['nombreMunicipio']."</option>";
-                                }
+                                //foreach($Municipios as $item){
+                                  //echo "<option value='$item[idMunicipio]'>".$item['nombreMunicipio']."</option>";
+                                //}
                               ?>
                           </select>
                         </div>
@@ -249,6 +262,37 @@
 
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
+    <script>
+      function ajax(str){
+            var peticion;
+
+            if(str=="")
+            {
+                document.getElementById("txtHint").innerHTML = "";
+                return;
+            }   
+
+            else
+            {
+                if(window.XMLHttpRequest){
+                peticion = new XMLHttpRequest();
+                
+                }else{
+                    peticion = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+            }
+
+            peticion.onreadystatechange = function(){
+                if ( peticion.readyState == 4 && peticion.status == 200 )
+                {
+                    document.getElementById("txtHint").innerHTML = peticion.responseText;
+                }
+            };
+            
+            peticion.open("GET","RecuperarDepMunController.php?idDepartamento="+str,true);
+            peticion.send();
+        }
+    </script>
 	
   </body>
 </html>
