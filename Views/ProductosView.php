@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Análisis de Sistemas </title>
-
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -27,6 +26,7 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+  
   </head>
 
   <body class="nav-md">
@@ -50,6 +50,7 @@
                 <h2>Eduardo Barrios</h2>
               </div>
             </div>
+
             <!-- /menu profile quick info -->
 
             <br />
@@ -122,21 +123,151 @@
         <!-- /top navigation -->
 
         <!-- page content -->
-        <div class="right_col" role="main">
+  <div class="right_col" role="main">
+      <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <a href="ProductoNuevoController.php" class="btn btn-round btn-info"><i class="fa fa-plus"></i></a>
+              <h3 class="text-center">Listado de Productos</h3>
+              <br>          
+                <table class="table table-hover">
+                  <tr>
+                    <th>Producto</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Costo</th>
+                    <th>Existencia</th>
+                    <th>Marca</th>
+                    <th colspan="2" class="text-center">Opciones</th>
+                  </tr>
 
-        </div>
+                  <?php foreach($Productos as $item): ?>
+                   <tr <?php if($item['existencia']<=5) echo 'class=danger'; ?>>
+                     <td><?php echo $item['nombreProducto']; ?></td>
+                     <td><?php echo $item['descripcion']; ?></td>
+                     <td><?php echo $item['precio']; ?></td>
+                     <td><?php echo $item['costo']; ?></td>
+                     <td><?php echo $item['existencia']; ?></td>
+                     <td><?php echo $item['nombreMarca']; ?></td>
+                     <td class="text-right"><button type="button" class="btn btn-round btn-success" data-toggle='modal' data-target='#modal-editar' onclick="CargarDatos('<?php echo $item['idProducto'];?>','<?php echo $item['nombreProducto']; ?>','<?php echo $item['descripcion'];?>','<?php echo $item['precio'];?>','<?php echo $item['costo'];?>','<?php echo $item['existencia'];?>','<?php echo $item['idMarca'];?>');"><i class="fa fa-edit"></i> Editar</button>
+                     </td>
+                     <td class="text-left"><button  type="button" class="btn btn-round btn-danger" onclick="confirmarRegistro('<?php echo $item['idProducto'];?>');"><i class="fa fa-trash"></i> Borrar</button>
+                     </td>
+
+                   </tr> 
+                  <?php endforeach; ?>
+                </table>
+
+                <div class="text-center">
+                      <nav aria-label="Page navigation">
+                            <ul class="pagination">        
+                             <?php                
+                                  for($i=1;$i<=$total_paginas;$i++)
+                                  {
+                                      if($i == $inicio ){
+                                           echo "<li class='active'><a>".$i." </a></li>";
+                                      }    
+                                      else{
+                                           echo "<li><a href='?pagina=".$i."'>".$i." </a></li>";  
+                                      }                        
+                                  }           
+                               ?>
+                            </ul>
+                      </nav> 
+                  </div>    
+
+                  <h5 class="text-left">
+                      <strong>
+                          <?php 
+                              if($inicio == 0) $inicioPag = 1;
+                              else $inicioPag = $inicio;
+                                  echo "Página ".$inicioPag." de ".$total_paginas;
+                                  echo " (Total de registros ".$total_registros.")"; 
+                                      
+                          ?>
+                      </strong>
+                  </h5>
+
+                 
+          </div>
+      </div>
+  </div>
+
         <!-- /page content -->
 
         <!-- footer content -->
         <footer>
           <div class="pull-right">
-            &copy; UMG ingeniería de Sistemas 2017 - Eduardo Barrios</a>
+            &copy; UMG ingeniería de Sistemas 2017 - Eduardo Barrios
           </div>
           <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
       </div>
     </div>
+<!-- MODAL PARA EDITAR -->
+<div class="modal fade" id="modal-editar">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                                        
+            <!-- CONTENIDO DEL HEAD - MODAL -->
+                                        
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="text-center "><strong>Editar Producto <span class="fa fa-pencil"></span></strong></h2>
+            </div>
+                                        
+            <!-- Contenido de la ventana -->
+            <div class="modal-body">
+                                            
+            <form method="POST">
+            <div class="form-group">                                            
+               <label for="productoEditar">Producto:</label>
+                <input  type="hidden" id="idProducto" name="idProducto"/>
+               <input type="text" id="productoEditar" name="productoEditar" class="form-control" required autofocus onkeypress="return validateInput(event)" onpaste="return false">
+            </div> 
+
+            <div class="form-group">                                            
+               <label for="descripcionEditar">Descripcion:</label>
+               <textarea type="text" id="descripcionEditar" name="descripcionEditar" class="form-control" required ></textarea>
+            </div>
+
+            <div class="form-group">
+            <label for="precioEditar">Precio:</label>
+            <input type="number" id="precioEditar" name="precioEditar" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+            <label for="costoEditar">Costo:</label>
+            <input type="number" id="costoEditar" name="costoEditar" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+            <label for="existenciaEditar">Existencia:</label>
+            <input type="number" id="existenciaEditar" name="existenciaEditar" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="marcaEditar">Marca:</label>
+                <select name="marcaEditar" id="marcaEditar" class="form-control">
+                  <option value="0">Selecciona</option>                            
+                    <?php
+                      foreach($Marcas as $item){
+                        echo "<option value='$item[idMarca]'>".$item['nombreMarca']."</option>";
+                      }
+                    ?>
+                </select>
+            </div>
+
+            <div class="modal-footer">
+                    <input type="submit" class="btn btn-success" id="editar-productos" name="editar-productos"  value="Actualizar">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
@@ -178,6 +309,30 @@
 
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
-    
+    <script>
+//funcion para cargar datos en el modal de editar
+        function CargarDatos(id,producto,descripcion,precio,costo,existencia,idMarca)
+        {
+            $("#idProducto").val(id);
+            $("#productoEditar").val(producto);
+            $("#descripcionEditar").val(descripcion);
+            $("#precioEditar").val(precio);
+            $("#costoEditar").val(costo);
+            $("#existenciaEditar").val(existencia);
+            $("#costoEditar").val();
+            $("#marcaEditar option[value="+idMarca+"]").attr("selected",true);            
+          
+        }
+
+        // funcion para confirmar el registro antes de eliminarlo
+        function confirmarRegistro(id)
+        {
+           if (window.confirm("Esta seguro que desea eliminar este registro?") == true)
+              {
+                 window.location = "ProductosController.php?idProducto="+id+"&accion=borrar";
+              }
+        }
+
+    </script>
   </body>
 </html>

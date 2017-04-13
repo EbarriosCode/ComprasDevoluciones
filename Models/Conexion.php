@@ -14,11 +14,12 @@
 			$db_password = "";
 			$db_nombre   = "compras-devoluciones";
 
-			return $conexion = new PDO("mysql:charset=utf8;host=$db_servidor;dbname=$db_nombre", $db_usuario, $db_password);
+			$conexion = new PDO("mysql:charset=utf8;host=$db_servidor;dbname=$db_nombre", $db_usuario, $db_password);
+			return $conexion;
 		}
 	}
 
-/* $r = new Conexion();
- var_dump($r->Conectar());*/
+ /*$r = new Conexion();
+ var_dump($r->Conectar()); */
 ?>
 

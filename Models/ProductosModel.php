@@ -1,45 +1,93 @@
 <?php 
+	require_once('Conexion.php');
 
-	class Productos
+	class Productos extends Conexion
 	{
-		//public $db, $conn, $productos;
+	
+		public function getProductos($inicio=false,$no_registros=false)
+		{ 	
+			if($inicio!==false && $no_registros!==false)
+			{
+				$sql = "SELECT P.idProducto,P.nombreProducto,P.descripcion,P.precio,P.costo,P.existencia,P.idMarca,M.nombreMarca
+					    FROM productos P
+					    INNER JOIN marcaproductos M ON P.idMarca = M.idMarca
+					    	ORDER BY P.idProducto DESC LIMIT $inicio,$no_registros";
+			}
+			else{
+				$sql = "SELECT P.idProducto,P.nombreProducto,P.descripcion,P.precio,P.costo,P.existencia,P.idMarca,M.nombreMarca
+					    FROM productos P
+					    INNER JOIN marcaproductos M ON P.idMarca = M.idMarca
+					    	ORDER BY P.idProducto DESC";	
+			}
 
-		/*public function __construct()
-		{
-			require_once('Conexion.php');
-			$this->db = new Conexion();
-			$this->conn = $this->db->Conectar();
-
-			$this->productos = array();
-		}*/
-
-		public function conn()
-		{
-			return $this->productos;
-		}
-
-		public function getProductos()
-		{ 
-			require_once('Conexion.php');
-			$db = new Conexion();
-			$conn = $db->Conectar();
-			
-			$sql = "SELECT * FROM productos";
-			$stmt = $conn->prepare($sql);
+			$stmt = Conexion::Conectar()->prepare($sql);
 			$stmt->execute();
 
-			$productos = array();
-			while($row = $stmt->fetch(PDO::FETCH_ASSOC))
-			{
-				$productos[] = $row;
-			}
-			//print_r($this->productos);
-			return $productos;
+			return $stmt->fetchAll();
+			$stmt->close();
+		}
+
+		public function numRegistros()
+		{
+			$sql = "SELECT idProducto FROM productos";
+			$resultado = Conexion::Conectar()->prepare($sql);
+			$resultado->execute();
+			return $resultado->fetchAll();			 
+		}
+
+		public function insertProductos($producto,$descripcion,$precio,$costo,$existencia,$idMarca)
+		{
+			$sql = "INSERT INTO productos(nombreProducto,descripcion,precio,costo,existencia,idMarca) VALUES(?,?,?,?,?,?)";
+			$stmt = Conexion::Conectar()->prepare($sql);
+
+			if($stmt->execute(array($producto,$descripcion,$precio,$costo,$existencia,$idMarca)))
+				return true;
+
+			else
+				return false;
+
+			$stmt->close();
+		}
+
+		public function updateProductos($idProducto,$nombreProducto,$descripcion,$precio,$costo,$existencia,$idMarca)
+		{
+			$sql = "UPDATE productos SET nombreProducto='$nombreProducto',descripcion='$descripcion',precio=$precio,costo=$costo,existencia=$existencia,idMarca=$idMarca WHERE idProducto=$idProducto";
+			$stmt = Conexion::Conectar()->prepare($sql);
+
+			if($stmt->execute())
+				return true;
+
+			else
+				return false;
+
+			$stmt->close();	
+		}
+
+		public function deleteProductos($idProducto)
+		{
+			$sql = "DELETE FROM Productos WHERE idProducto=$idProducto";
+			$stmt = Conexion::Conectar()->prepare($sql);
+
+			if($stmt->execute())
+				return true;
+
+			else
+				return false;
+
+			$stmt->close();		
+		}
+
+		public function getMarcas()
+		{
+			$sql = "SELECT idMarca,nombreMarca FROM marcaproductos";
+			$stmt = Conexion::Conectar()->prepare($sql);
+			$stmt->execute();
+
+			return $stmt->fetchAll();
+			$stmt->close();
 		}
 	}
 
-	$r = new Productos();
-	var_dump($r->getProductos);
-
-
+	/*$r = new Productos();
+	echo sizeof($r->numRegistros());*/
  ?>
