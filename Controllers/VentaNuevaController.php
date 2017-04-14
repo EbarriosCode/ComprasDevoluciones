@@ -1,13 +1,13 @@
-<?php
-	require_once('../Models/ProductosModel.php'); 
+<?php 
+	require_once('../Models/VentasModel.php');
+	
+	$inst = new Ventas();
 
-	$inst = new Productos();
-	$Marcas = $inst->getMarcas();
-
-	if(isset($_POST['insertar-producto']))
+	if(isset($_POST['insertar-venta-transaccion']))
 	{
-		$codigoProducto = $_POST['codigoProducto'];
-		$producto = $_POST['producto'];
+        $fechaHoy = Date('Y-m-d');
+        echo $fechaHoy;
+		/*$producto = $_POST['producto'];
 		$descripcion = $_POST['descripcion'];
 		$precio = $_POST['precio'];
 		$costo = $_POST['costo'];
@@ -22,8 +22,8 @@
 		else{
 			echo "<script>alert('No se actualizo el registro');";
 			echo "window.location.href='ProductosController.php'</script>";
-		}
+		} */
 	}
-	require_once('../Views/ProductoNuevoView.php');
 	
+	require_once('../Views/VentaNuevaView.php');
  ?>

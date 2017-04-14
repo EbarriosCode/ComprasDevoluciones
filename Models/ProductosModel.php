@@ -8,13 +8,13 @@
 		{ 	
 			if($inicio!==false && $no_registros!==false)
 			{
-				$sql = "SELECT P.idProducto,P.nombreProducto,P.descripcion,P.precio,P.costo,P.existencia,P.idMarca,M.nombreMarca
+				$sql = "SELECT P.idProducto,P.codigoProducto,P.nombreProducto,P.descripcion,P.precio,P.costo,P.existencia,P.idMarca,M.nombreMarca
 					    FROM productos P
 					    INNER JOIN marcaproductos M ON P.idMarca = M.idMarca
 					    	ORDER BY P.idProducto DESC LIMIT $inicio,$no_registros";
 			}
 			else{
-				$sql = "SELECT P.idProducto,P.nombreProducto,P.descripcion,P.precio,P.costo,P.existencia,P.idMarca,M.nombreMarca
+				$sql = "SELECT P.idProducto,P.codigoProducto,P.nombreProducto,P.descripcion,P.precio,P.costo,P.existencia,P.idMarca,M.nombreMarca
 					    FROM productos P
 					    INNER JOIN marcaproductos M ON P.idMarca = M.idMarca
 					    	ORDER BY P.idProducto DESC";	
@@ -35,12 +35,12 @@
 			return $resultado->fetchAll();			 
 		}
 
-		public function insertProductos($producto,$descripcion,$precio,$costo,$existencia,$idMarca)
+		public function insertProductos($codigoProducto,$producto,$descripcion,$precio,$costo,$existencia,$idMarca)
 		{
-			$sql = "INSERT INTO productos(nombreProducto,descripcion,precio,costo,existencia,idMarca) VALUES(?,?,?,?,?,?)";
+			$sql = "INSERT INTO productos(codigoProducto,nombreProducto,descripcion,precio,costo,existencia,idMarca) VALUES(?,?,?,?,?,?,?)";
 			$stmt = Conexion::Conectar()->prepare($sql);
 
-			if($stmt->execute(array($producto,$descripcion,$precio,$costo,$existencia,$idMarca)))
+			if($stmt->execute(array($codigoProducto,$producto,$descripcion,$precio,$costo,$existencia,$idMarca)))
 				return true;
 
 			else
@@ -49,9 +49,9 @@
 			$stmt->close();
 		}
 
-		public function updateProductos($idProducto,$nombreProducto,$descripcion,$precio,$costo,$existencia,$idMarca)
+		public function updateProductos($idProducto,$codigoProducto,$nombreProducto,$descripcion,$precio,$costo,$existencia,$idMarca)
 		{
-			$sql = "UPDATE productos SET nombreProducto='$nombreProducto',descripcion='$descripcion',precio=$precio,costo=$costo,existencia=$existencia,idMarca=$idMarca WHERE idProducto=$idProducto";
+			$sql = "UPDATE productos SET codigoProducto='$codigoProducto',nombreProducto='$nombreProducto',descripcion='$descripcion',precio=$precio,costo=$costo,existencia=$existencia,idMarca=$idMarca WHERE idProducto=$idProducto";
 			$stmt = Conexion::Conectar()->prepare($sql);
 
 			if($stmt->execute())

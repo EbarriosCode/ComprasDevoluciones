@@ -1,58 +1,99 @@
-create procedure handlerDemo()
-begin
-/*Handler para error SQL*/ 
-DECLARE EXIT HANDLER FOR SQLEXCEPTION 
-BEGIN 
-SELECT 1 as error; 
-ROLLBACK; 
-END;
+DROP PROCEDURE sp_TransaccionVentas;
+CALL sp_TransaccionVentas(curdate(),'0001',1,1,2);
 
-/*Handler para error SQL*/ 
-DECLARE EXIT HANDLER FOR SQLWARNING 
-BEGIN 
-SELECT 1 as error; 
-ROLLBACK; 
-END;
 
-end
-
-declare error int;
-start transaction;
-    /* insertar en la tabla ventas */
-	insert into ventas(fecha,documento,idCliente) values(curdate(),2,1);
-    set @idVenta = (select max(idVenta) as IdUltimaVenta from ventas);
+DELIMITER $$
+CREATE PROCEDURE sp_TransaccionVentas
+(in Fecha date,in Documento varchar(50),in IdCliente int,in IdProducto int,in Cantidad int)
+BEGIN
+	 /*DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	 BEGIN
+	 SHOW ERRORS LIMIT 1;
+	 ROLLBACK;
+	 END; 
+	 
+     DECLARE EXIT HANDLER FOR SQLWARNING
+	 BEGIN
+	 SHOW WARNINGS LIMIT 1;
+	 ROLLBACK;
+	 END;
+		
+	*/
+	START TRANSACTION;    
+		/* insertar en la tabla ventas 
+		INSERT INTO ventas(fecha,documento,idCliente) VALUES(Fecha,Documento,IdCliente);*/
+		SET @idVenta = (SELECT MAX(idVenta) FROM ventas);/*LAST_INSERT_ID();*/
+		select @idVenta as idVenta;
+        
+		SET @idProducto = IdProducto;
+        select @idProducto as idProducto;
+        
+		SET @PrecioProducto = (SELECT precio FROM productos WHERE idProducto = @idProducto);
+        select @PrecioProducto as precioProducto;
+        
+		SET @cantidad = Cantidad;
+        select @cantidad as cantidad;
+        
+		SET @costoTotal = (@cantidad*@PrecioProducto);
+		select @costoTotal as costoTotal;
+        
+        
+        
+        
+		/* insertar el detalle en la tabla ventasdetalle 
+		INSERT INTO ventasdetalle(idVenta,idProducto,cantidad,precio,costoTotal)VALUES(@idVenta,@idProducto,@cantidad,@PrecioProducto,@costoTotal);
+		
+		/* descontar la existencia de la tabla productos 
+		UPDATE productos SET existencia = (existencia - @cantidad) WHERE idProducto = @idProducto;
+	
+    COMMIT; */
+END $$
     
-    set @idProducto = 1;
-    set @PrecioProducto = (select precio from productos where idProducto = @idProducto);
-    set @cantidad = 2;
-    set @costoTotal = (@cantidad*@PrecioProducto);
-    
-    /* insertar el detalle en la tabla ventasdetalle */
-    insert into ventasdetalle(idVenta,idProducto,cantidad,precio,costoTotal)values(@idVenta,@idProducto,@cantidad,@PrecioProducto,@costoTotal);
-    
-    /* descontar la existencia de la tabla productos */
-    update productos set existencia = (existencia - @cantidad) where idProducto = @idProducto;
-    
-    set error = @error;
-    select error;
-    commit;
-/*Mandamos 0 si todo salio bien*/ 
-SELECT 0 as error; 
-    
-    
 
+truncate table ventas;
 
-
-truncate table ventasdetalle;
-
-
-select * from clientes;
-select * from productos;
-insert into clientes(nombreCliente,nit,direccion,telefono,idMunicipio)values('Mario Castillo','098765-2','Zona 2','58655820',5);
-select * from ventas;
-select * from ventasdetalle;
-
-select @@autocommit;
+select @@autocommit AS AUTO;
 show engines;
 
 
+
+
+DELIMITER $$
+CREATE PROCEDURE sp_TransaccionVentasTEST
+(Fecha date,Documento varchar(50),IdCliente int,IdProducto int,Cantidad int)
+BEGIN
+	 DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	 BEGIN
+	 SHOW ERRORS LIMIT 1;
+	 ROLLBACK;
+	 END; 
+	 
+     DECLARE EXIT HANDLER FOR SQLWARNING
+	 BEGIN
+	 SHOW WARNINGS LIMIT 1;
+	 ROLLBACK;
+	 END;
+		
+	
+    
+	START TRANSACTION;    
+		/* insertar en la tabla ventas */
+		INSERT INTO ventas(fecha,documento,idCliente) VALUES(Fecha,Documento,IdCliente);
+		SELECT @idVenta := MAX(idVenta) FROM ventas;
+		
+        SELECT @idProducto := IdProducto;
+		SELECT @precio := (SELECT precio FROM productos WHERE idProducto = @idProducto LIMIT 0,1);        
+		SELECT @cantidad := Cantidad;        
+		SELECT @costoTotal := (@cantidad*@precio);   
+               
+		 /*insertar el detalle en la tabla ventasdetalle */
+		INSERT INTO ventasdetalle(idVenta,idProducto,cantidad,precio,costoTotal)VALUES(@idVenta,@idProducto,@cantidad,@precio,@costoTotal);
+		
+		/* descontar la existencia de la tabla productos */
+		UPDATE productos SET existencia = existencia-@cantidad WHERE idProducto = @idProducto;
+		
+    COMMIT; 
+END $$
+    
+DROP PROCEDURE sp_TransaccionVentasTEST;
+CALL sp_TransaccionVentasTEST(curdate(),'0001',1,1,1);

@@ -123,7 +123,7 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
-              <h3 class="text-center">Registrar Nuevo Producto <i class="fa fa-plus"></i></h3>
+              <h3 class="text-center">Registrar Nueva Venta <i class="fa fa-plus"></i></h3>
 
               <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
@@ -141,70 +141,66 @@
                   <div class="x_content">
                     <br />
                     <form id="demo-form2" method="post" data-parsley-validate class="form-horizontal form-label-left">
+                      <div class="form-group">                        
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nit">Nit Cliente <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" id="nit" name="nit" required="required" class="form-control col-md-7 col-xs-12" onchange="ajax(this.value)">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cliente">Nombre Cliente <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12" id="txtHint">
+                          <input type="text" id="cliente" name="cliente" required="required" disabled placeholder="El nombre aparecerá cuando ingrese el nit" class="form-control col-md-7 col-xs-12">
+                        </div>
+                      </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="codigoProducto">Código Producto <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="codigoProducto" name="codigoProducto" required="required" class="form-control col-md-7 col-xs-12">
+                          <input type="text" id="codigoProducto" name="codigoProducto" required="required" class="form-control col-md-7 col-xs-12" onchange="ajaxProducto(this.value)">
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="producto">Nombre Producto <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="producto">Producto <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="producto" name="producto" required="required" class="form-control col-md-7 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-12" id="txtHintProducto">
+                          <input type="text" id="producto" name="producto" placeholder="El nombre del producto aparecerá cuando ingrese el código" required="required" class="form-control col-md-7 col-xs-12" disabled>
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="descripcion">Descripción <span class="required">*</span>
-                        </label>
+                        <label for="cantidadProducto" class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <textarea id="descripcion" name="descripcion" required="required" class="form-control col-md-7 col-xs-12"></textarea>
+                          <input id="cantidadProducto" class="form-control col-md-7 col-xs-12" type="number" name="cantidadProducto">
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="precio" class="control-label col-md-3 col-sm-3 col-xs-12">Precio</label>
+                        <label for="precioUnitario" class="control-label col-md-3 col-sm-3 col-xs-12">Precio Unitario</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="precio" class="form-control col-md-7 col-xs-12" type="number" name="precio">
+                          <input id="precioUnitario" class="form-control col-md-7 col-xs-12" type="number" name="precioUnitario">
                         </div>
                       </div>
+
                       <div class="form-group">
-                        <label for="costo" class="control-label col-md-3 col-sm-3 col-xs-12">Costo</label>
+                        <label for="costoTotal" class="control-label col-md-3 col-sm-3 col-xs-12">Total</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="costo" class="form-control col-md-7 col-xs-12" type="number" name="costo">
+                          <input id="costoTotal" class="form-control col-md-7 col-xs-12" type="number" name="costoTotal">
                         </div>
                       </div>
-                      <div class="form-group">
-                        <label for="existencia" class="control-label col-md-3 col-sm-3 col-xs-12">Existencia</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="existencia" class="form-control col-md-7 col-xs-12" type="number" name="existencia">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                          <label for="marca" class="control-label col-md-3 col-sm-3 col-xs-12">Marca</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <select id="marca" class="form-control col-md-7 col-xs-12" name="marca">
-                              <option value="0">Selecciona</option>                            
-                              <?php
-                                foreach($Marcas as $item){
-                                  echo "<option value='$item[idMarca]'>".$item['nombreMarca']."</option>";
-                                }
-                              ?>
-                          </select>
-                        </div>
-                      </div>                     
+                      
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">                          
                           <button class="btn btn-primary" type="reset">Limpiar</button>
-                          <button type="submit" class="btn btn-success" name="insertar-producto">Guardar</button>
+                          <button type="submit" class="btn btn-success" name="insertar-venta-transaccion">Crear Venta</button>
                         </div>
                       </div>
 
                     </form>
                   </div>
                 </div>
-              </div>
+              </div>              
             </div>
         </div>
         <!-- /page content -->
@@ -260,6 +256,68 @@
 
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
+    <script>
+      function ajax(str){
+            var peticion;
+
+            if(str=="")
+            {
+                document.getElementById("txtHint").innerHTML = "";
+                return;
+            }   
+
+            else
+            {
+                if(window.XMLHttpRequest){
+                peticion = new XMLHttpRequest();
+                
+                }else{
+                    peticion = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+            }
+
+            peticion.onreadystatechange = function(){
+                if ( peticion.readyState == 4 && peticion.status == 200 )
+                {
+                    document.getElementById("txtHint").innerHTML = peticion.responseText;
+                }
+            };
+            
+            peticion.open("GET","RecuperarClienteController.php?nit="+str,true);
+            peticion.send();
+        }
+
+
+        function ajaxProducto(str){
+            var peticion;
+
+            if(str=="")
+            {
+                document.getElementById("txtHintProducto").innerHTML = "";
+                return;
+            }   
+
+            else
+            {
+                if(window.XMLHttpRequest){
+                peticion = new XMLHttpRequest();
+                
+                }else{
+                    peticion = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+            }
+
+            peticion.onreadystatechange = function(){
+                if ( peticion.readyState == 4 && peticion.status == 200 )
+                {
+                    document.getElementById("txtHintProducto").innerHTML = peticion.responseText;
+                }
+            };
+            
+            peticion.open("GET","RecuperarProductoController.php?codigoProducto="+str,true);
+            peticion.send();
+        }
+    </script>
 	
   </body>
 </html>

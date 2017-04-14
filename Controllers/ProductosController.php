@@ -40,6 +40,7 @@
 	if(isset($_POST['editar-productos']))
 	{
 		$idProducto = $_POST['idProducto'];
+		$codigoProducto = $_POST['codigoProducto'];
 		$producto = $_POST['productoEditar'];
 		$descripcion = $_POST['descripcionEditar'];
 		$precio = $_POST['precioEditar'];
@@ -47,7 +48,7 @@
 		$existencia = $_POST['existenciaEditar'];
 		$idMarca = $_POST['marcaEditar'];
 
-		$editado = $inst->updateProductos($idProducto,$producto,$descripcion,$precio,$costo,$existencia,$idMarca);
+		$editado = $inst->updateProductos($idProducto,$codigoProducto,$producto,$descripcion,$precio,$costo,$existencia,$idMarca);
 		if($editado){
 			echo "<script>alert('Registro Actualizado Correctamente');";
 			echo "window.location.href='ProductosController.php'</script>";

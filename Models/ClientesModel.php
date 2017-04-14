@@ -25,9 +25,9 @@
 
 			return $stmt->fetchAll();
 			$stmt->close();
-	}
+		}
 
-	public function numRegistros()
+		public function numRegistros()
 		{
 			$sql = "SELECT idCliente FROM clientes";
 			$resultado = Conexion::Conectar()->prepare($sql);
@@ -107,6 +107,22 @@
 			return $stmt->fetchAll();
 			$stmt->close();
 		}
-	}
 
+		public function storeProcedure()
+		{
+			$sql = "call debug()";
+			$stmt = Conexion::Conectar()->prepare($sql);
+			$stmt->execute();
+
+			return $stmt->fetchAll();
+			$stmt->close();
+		}		
+	}
+/*
+	$r = new Clientes();
+	//var_dump($r->storeProcedure());
+	foreach ($r->storeProcedure() as $key) {
+		echo $key['nombreCliente']."<br>";
+	}
+*/
  ?>
