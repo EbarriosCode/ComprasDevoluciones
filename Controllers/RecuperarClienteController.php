@@ -7,9 +7,11 @@
 	$Cliente = $inst->getClienteAjax($nit);
 
 	if($Cliente){
+		echo "<select id='idCliente' name='idCliente' class='form-control' required>";
 		foreach($Cliente as $item){	
-				echo "<input type='text' id='cliente' name='cliente' required='required' value='".$item['nombreCliente']."' class='form-control' disabled>";
+				echo "<option value='$item[idCliente]'>".$item['nombreCliente']."</option>";
 		}
+		echo "</select>";
 	}
 	else{
 		echo "<label class='label label-danger'>No existe ningún Cliente con ese nit</label>";

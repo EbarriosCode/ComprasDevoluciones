@@ -5,7 +5,7 @@
 	{
 		public function insertVentas($fecha,$documento,$idCliente,$idProducto,$cantidad)
 		{
-			$sql = "CALL sp_TransaccionVentasTEST('$fecha','$documento',$idCliente,$idProducto,$cantidad)";
+			$sql = "CALL sp_TransaccionVentas('$fecha','$documento',$idCliente,$idProducto,$cantidad)";
 			$stmt = Conexion::Conectar()->prepare($sql);
 
 			if($stmt->execute())
@@ -57,7 +57,7 @@
 
 		public function getClienteAjax($nit)
 		{
-			$sql = "SELECT nombreCliente FROM clientes WHERE nit=$nit";
+			$sql = "SELECT idCliente,nombreCliente FROM clientes WHERE nit=$nit";
 			$stmt = Conexion::Conectar()->prepare($sql);
 			$stmt->execute();
 
@@ -67,15 +67,29 @@
 
 		public function getProductoAjax($codigo)
 		{
-			$sql = "SELECT nombreProducto FROM productos WHERE codigoProducto='$codigo'";
+			$sql = "SELECT P.idProducto,P.nombreProducto,P.idMarca,P.precio,P.existencia,M.idMarca,M.nombreMarca
+				    FROM productos P
+					INNER JOIN marcaproductos M ON P.idMarca = M.idMarca
+				    WHERE codigoProducto='$codigo'";
 			$stmt = Conexion::Conectar()->prepare($sql);
 			$stmt->execute();
 
 			return $stmt->fetchAll();
 			$stmt->close();
 		}
-	}
 
+		public function getCostoTotalProducto($cantidad)
+		{
+			$sql = "SELECT idCliente,nombreCliente FROM clientes WHERE nit=$nit";
+			$stmt = Conexion::Conectar()->prepare($sql);
+			$stmt->execute();
+
+			return $stmt->fetchAll();
+			$stmt->close();
+		}
+
+	}
+	
 	/*$r = new Ventas();
-	echo json_encode($r->getVentas(0,5)); */
+	var_dump($r->insertVentas('2017-01-01','0010',2,1,2));*/
  ?>

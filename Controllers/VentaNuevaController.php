@@ -3,26 +3,25 @@
 	
 	$inst = new Ventas();
 
+
 	if(isset($_POST['insertar-venta-transaccion']))
 	{
-        $fechaHoy = Date('Y-m-d');
-        echo $fechaHoy;
-		/*$producto = $_POST['producto'];
-		$descripcion = $_POST['descripcion'];
-		$precio = $_POST['precio'];
-		$costo = $_POST['costo'];
-		$existencia = $_POST['existencia'];
-		$idMarca = $_POST['marca'];
+        $fechaHoy = Date('Y-m-d');        
+		$documento = '01234';
+		$idCliente = $_POST['idCliente'];
+		$idProducto = $_POST['idProducto'];
+		$cantidad = $_POST['cantidadProducto'];
+		
 
-		$insertado = $inst->insertProductos($codigoProducto,$producto,$descripcion,$precio,$costo,$existencia,$idMarca);
+		$insertado = $inst->insertVentas($fechaHoy,$documento,$idCliente,$idProducto,$cantidad);
 		if($insertado){
 			echo "<script>alert('Registro Guardado Correctamente');";
-			echo "window.location.href='ProductosController.php'</script>";
+			echo "window.location.href='VentasController.php'</script>";
 		}
 		else{
-			echo "<script>alert('No se actualizo el registro');";
-			echo "window.location.href='ProductosController.php'</script>";
-		} */
+			echo "<script>alert('No se guardo el registro');";
+			echo "window.location.href='VentasController.php'</script>";
+		} 
 	}
 	
 	require_once('../Views/VentaNuevaView.php');

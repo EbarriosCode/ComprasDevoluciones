@@ -149,10 +149,10 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cliente">Nombre Cliente <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="idCliente">Nombre Cliente <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12" id="txtHint">
-                          <input type="text" id="cliente" name="cliente" required="required" disabled placeholder="El nombre aparecerá cuando ingrese el nit" class="form-control col-md-7 col-xs-12">
+                          <input type="text" id="idCliente" name="idCliente" required="required" disabled placeholder="El nombre aparecerá cuando ingrese el nit" class="form-control col-md-7 col-xs-12">
                         </div>
                       </div>
                       <div class="form-group">
@@ -166,26 +166,19 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="producto">Producto <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12" id="txtHintProducto">
-                          <input type="text" id="producto" name="producto" placeholder="El nombre del producto aparecerá cuando ingrese el código" required="required" class="form-control col-md-7 col-xs-12" disabled>
+                          <input type="text" id="idProducto" name="idProducto" placeholder="El nombre del producto aparecerá cuando ingrese el código" required="required" class="form-control col-md-7 col-xs-12" disabled>
                         </div>
-                      </div>
+                      </div>                      
                       <div class="form-group">
                         <label for="cantidadProducto" class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input id="cantidadProducto" class="form-control col-md-7 col-xs-12" type="number" name="cantidadProducto">
                         </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="precioUnitario" class="control-label col-md-3 col-sm-3 col-xs-12">Precio Unitario</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="precioUnitario" class="form-control col-md-7 col-xs-12" type="number" name="precioUnitario">
-                        </div>
-                      </div>
-
+                      </div>                     
                       <div class="form-group">
                         <label for="costoTotal" class="control-label col-md-3 col-sm-3 col-xs-12">Total</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="costoTotal" class="form-control col-md-7 col-xs-12" type="number" name="costoTotal">
+                          <input disabled id="costoTotal" class="form-control col-md-7 col-xs-12" type="number" name="costoTotal">
                         </div>
                       </div>
                       
