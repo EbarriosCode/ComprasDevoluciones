@@ -11,11 +11,11 @@
 		$fechaDesde = $_POST['desde'];;
 		$fechaHasta = $_POST['hasta'];;		
 	}
-	
+
 	// Inicia paginación
 	$cant_filas = new Ventas();
 	$pagination = new Ventas();	
-	$no_registros = 5;
+	$no_registros = 10;
 
 	if(isset($_GET['pagina']))
 	 {
@@ -36,7 +36,7 @@
 	
 	$nuevo_inicio = ($inicio-1)*$no_registros;
 	
-	$Ventas = $pagination->getVentas($nuevo_inicio,$no_registros,$fechaDesde,$fechaHasta);
+	$Ventas = $pagination->getVentas(/*$nuevo_inicio,$no_registros,*/$fechaDesde,$fechaHasta);
 	
 	$total_registros = count($cant_filas->numRegistros());
 	$total_paginas = ceil($total_registros/$no_registros);

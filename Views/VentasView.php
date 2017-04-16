@@ -146,7 +146,7 @@
                   </tr>
 
                   <?php foreach($Ventas as $item): ?>
-                   <tr>
+                   <tr <?php if($item['impresoPagado'] == 1) echo 'class=success'; ?>>
                      <td><?php echo $item['fecha']; ?></td>
                      <td><?php echo $item['idVenta']; ?></td>
                      <td><?php echo $item['nombreCliente']; ?></td>
@@ -154,18 +154,18 @@
                      <td><?php echo $item['precio']; ?></td>
                      <td><?php echo $item['cantidad']; ?></td>
                      <td><?php echo $item['costoTotal']; ?></td>                     
-                     <td class="text-center"><a href="FacturasController.php?noFactura=<?php echo $item["idVenta"]; ?>"><button  type="button" class="btn btn-round btn-primary"><i class="fa fa-print"></i> Imprimir</button></a>
+                     <td class="text-center"><a target="_blank" href="FacturasController.php?noFactura=<?php echo $item["idVenta"]; ?>"><button id="imprimir" type="button" class="btn btn-round btn-primary" onclick="setImpresoPagado('<?php echo $item["idVenta"]; ?>')"><i class="fa fa-print"></i> Imprimir</button></a>
                      </td>
 
                    </tr> 
                   <?php endforeach; ?>
                 </table>
 
-                <div class="text-center">
+                <!--<div class="text-center">
                       <nav aria-label="Page navigation">
                             <ul class="pagination">        
                              <?php                
-                                  for($i=1;$i<=$total_paginas;$i++)
+                                /*for($i=1;$i<=$total_paginas;$i++)
                                   {
                                       if($i == $inicio ){
                                            echo "<li class='active'><a>".$i." </a></li>";
@@ -185,14 +185,14 @@
                               if($inicio == 0) $inicioPag = 1;
                               else $inicioPag = $inicio;
                                   echo "Página ".$inicioPag." de ".$total_paginas;
-                                  echo " (Total de registros ".$total_registros.")"; 
+                                  echo " (Total de registros ".$total_registros.")";  */
                                       
                           ?>
                       </strong>
-                  </h5>                 
+                  </h5>                 -->
           </div>
       </div>
-  </div>
+  </div>  
 
         <!-- /page content -->
 
@@ -308,6 +308,26 @@
               }
         }
 
+    </script>
+
+    <script>
+        function setImpresoPagado(documento)
+        {
+          $.ajax({
+            type: 'GET',
+            url: 'CambiarAimpresoAjax.php?NoDocumento='+documento,            
+          }).done(function(resp){
+            //alert(resp);
+          });
+        }
+    </script>
+
+    <script>
+       $(document).ready(function(){
+            $('#imprimir').click(function(){
+
+            });
+       });
     </script>
   </body>
 </html>

@@ -17,22 +17,22 @@
 			$stmt->close();
 		}
 
-		public function getVentas($inicio=false,$no_registros=false,$desde=false,$hasta=false)
+		public function getVentas($desde=false,$hasta=false)
 		{ 	
-			if($inicio!==false && $no_registros!==false && $desde!==false && $hasta!==false)
+			if($desde!==false && $hasta!==false)
 			{
 				$sql = "SELECT V.idVenta,V.fecha,V.idCliente,C.nombreCliente,
-				               DV.idProducto,P.nombreProducto,DV.cantidad,DV.precio,DV.costoTotal						       
+				               DV.idProducto,P.nombreProducto,DV.cantidad,DV.precio,DV.costoTotal,DV.impresoPagado		   
 						FROM ventas V
 						INNER JOIN ventasdetalle DV ON V.idVenta = DV.idVenta
 						INNER JOIN clientes C ON V.idCliente = C.idCliente
 						INNER JOIN productos P ON DV.idProducto = P.idProducto
 							WHERE V.fecha >='$desde' AND V.fecha <='$hasta'
-					    	ORDER BY V.idVenta DESC LIMIT $inicio,$no_registros";
+					    	ORDER BY V.idVenta DESC";
 			}
 			else{
 				$sql = "SELECT V.idVenta,V.fecha,V.idCliente,C.nombreCliente,
-				               DV.idProducto,P.nombreProducto,DV.cantidad,DV.precio,DV.costoTotal						       
+				               DV.idProducto,P.nombreProducto,DV.cantidad,DV.precio,DV.costoTotal,DV.impresoPagado						       
 						FROM ventas V
 						INNER JOIN ventasdetalle DV ON V.idVenta = DV.idVenta
 						INNER JOIN clientes C ON V.idCliente = C.idCliente
@@ -82,6 +82,16 @@
 		public function getCostoTotalProducto($cantidad)
 		{
 			$sql = "SELECT idCliente,nombreCliente FROM clientes WHERE nit=$nit";
+			$stmt = Conexion::Conectar()->prepare($sql);
+			$stmt->execute();
+
+			return $stmt->fetchAll();
+			$stmt->close();
+		}
+
+		public function setImpresoPagado($idVenta)
+		{
+			$sql = "UPDATE ventasdetalle SET impresoPagado=1 WHERE idVenta=$idVenta";
 			$stmt = Conexion::Conectar()->prepare($sql);
 			$stmt->execute();
 
