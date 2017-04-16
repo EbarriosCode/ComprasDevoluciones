@@ -17,9 +17,9 @@
 			$stmt->close();
 		}
 
-		public function getVentas($inicio=false,$no_registros=false)
+		public function getVentas($inicio=false,$no_registros=false,$desde=false,$hasta=false)
 		{ 	
-			if($inicio!==false && $no_registros!==false)
+			if($inicio!==false && $no_registros!==false && $desde!==false && $hasta!==false)
 			{
 				$sql = "SELECT V.idVenta,V.fecha,V.idCliente,C.nombreCliente,
 				               DV.idProducto,P.nombreProducto,DV.cantidad,DV.precio,DV.costoTotal						       
@@ -27,6 +27,7 @@
 						INNER JOIN ventasdetalle DV ON V.idVenta = DV.idVenta
 						INNER JOIN clientes C ON V.idCliente = C.idCliente
 						INNER JOIN productos P ON DV.idProducto = P.idProducto
+							WHERE V.fecha >='$desde' AND V.fecha <='$hasta'
 					    	ORDER BY V.idVenta DESC LIMIT $inicio,$no_registros";
 			}
 			else{
@@ -91,5 +92,5 @@
 	}
 	
 	/*$r = new Ventas();
-	var_dump($r->insertVentas('2017-01-01','0010',2,1,2));*/
+	var_dump($r->getVentas(0,5,'2017-04-15','2017-04-16'));*/
  ?>

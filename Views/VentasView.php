@@ -225,10 +225,14 @@
 
 
             <div class="form-group">                                            
-               <label for="fechaVentas">Fecha:</label>
-               <input type="date" id="fechaVentas" name="fechaVentas" class="form-control" value="<?php echo date('Y-m-d');?>" required >
+               <label for="fechaVentas">Desde:</label>
+               <input type="date" id="desde" name="desde" class="form-control" value="<?php echo date('Y-m-d');?>" required >
             </div>
-
+            
+            <div class="form-group">                                            
+               <label for="fechaVentas">Hasta:</label>
+               <input type="date" id="hasta" name="hasta" class="form-control" value="<?php echo date('Y-m-d');?>" required >
+            </div>
 
             <div class="modal-footer">
                     <input type="submit" class="btn btn-warning" id="fecha-ventas" name="fecha-ventas"  value="Cambiar Fecha">

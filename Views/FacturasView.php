@@ -21,8 +21,15 @@
 			margin-left: 30px;
 			margin-right: 40px;			
 		}
+		
+		.derecha{						
+			text-align: right;			
+			margin-right: 30px;
+			margin-right: 40px;			
+		}
 
 		table {
+			margin-top: 15px;
 		    border-collapse: collapse;
 		    width: 100%;
 		}
@@ -72,7 +79,7 @@
 			
 		<?php endforeach; ?>
 		
-		<table class="tabla">
+		<table>
 			<tr>
 				<th>Código</th>
 				<th>Descripción</th>
@@ -87,9 +94,10 @@
 				<td><?php echo $item['precio']; ?></td>
 				<td><?php echo $item['costoTotal']; ?></td>
 			</tr>
-		</table>
-
+		</table>		
+		<h6 class="derecha">Sujeto a pagos trimestrales</h6>
 		</div>
+	<hr>
 	</div>
 </body>
 </html>
