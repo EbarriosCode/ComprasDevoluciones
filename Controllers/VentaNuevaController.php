@@ -7,13 +7,12 @@
 	if(isset($_POST['insertar-venta-transaccion']))
 	{
         $fechaHoy = Date('Y-m-d');        
-		$documento = '01234';
 		$idCliente = $_POST['idCliente'];
 		$idProducto = $_POST['idProducto'];
 		$cantidad = $_POST['cantidadProducto'];
 		
 
-		$insertado = $inst->insertVentas($fechaHoy,$documento,$idCliente,$idProducto,$cantidad);
+		$insertado = $inst->insertVentas($fechaHoy,$idCliente,$idProducto,$cantidad);
 		if($insertado){
 			echo "<script>alert('Registro Guardado Correctamente');";
 			echo "window.location.href='VentasController.php'</script>";

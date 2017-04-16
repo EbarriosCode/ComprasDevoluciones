@@ -148,13 +148,13 @@
                   <?php foreach($Ventas as $item): ?>
                    <tr>
                      <td><?php echo $item['fecha']; ?></td>
-                     <td><?php echo $item['documento']; ?></td>
+                     <td><?php echo $item['idVenta']; ?></td>
                      <td><?php echo $item['nombreCliente']; ?></td>
                      <td><?php echo $item['nombreProducto']; ?></td>
                      <td><?php echo $item['precio']; ?></td>
                      <td><?php echo $item['cantidad']; ?></td>
                      <td><?php echo $item['costoTotal']; ?></td>                     
-                     <td class="text-center"><button  type="button" class="btn btn-round btn-primary"><i class="fa fa-print"></i> Imprimir</button>
+                     <td class="text-center"><a href="FacturasController.php?noFactura=<?php echo $item["idVenta"]; ?>"><button  type="button" class="btn btn-round btn-primary"><i class="fa fa-print"></i> Imprimir</button></a>
                      </td>
 
                    </tr> 

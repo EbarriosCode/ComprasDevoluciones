@@ -153,7 +153,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nit">Nit <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="nit" name="nit" required="required" class="form-control col-md-7 col-xs-12">
+                          <input type="text" id="nit" name="nit" required="required" class="form-control col-md-7 col-xs-12" placeholder="SIN GUIONES" onkeypress="return validateInput(event)" onpaste="return false">
                         </div>
                       </div>
                       <div class="form-group">
@@ -293,6 +293,30 @@
             peticion.send();
         }
     </script>
-	
+    <script type="text/javascript">
+     // funcion para validar que solo ingresen numeros en el nit
+        function validateInput(e)
+        {
+            key = e.keyCode || e.which;
+            teclado = String.fromCharCode(key);
+            caracteres = "0123456789";
+            especiales = "8-37-38-46-164";
+            teclado_especial = false;
+
+                for(var i in especiales)
+                {
+                    if(key==especiales[i])
+                    {
+                        teclado_especial = true;
+                        break;
+                    }
+                }
+
+                if(caracteres.indexOf(teclado) == -1 && !teclado_especial)
+                {
+                    return false;
+                }
+        }
+  </script>	
   </body>
 </html>

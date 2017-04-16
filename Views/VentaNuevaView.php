@@ -27,6 +27,14 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+    <style>
+      #alerta{
+        display: none;
+        margin-top: 10px;
+        text-align: center;
+        margin-left: 25%;
+      }
+    </style>
   </head>
 
   <body class="nav-md">
@@ -145,7 +153,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nit">Nit Cliente <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="nit" name="nit" required="required" class="form-control col-md-7 col-xs-12" onchange="ajax(this.value)">
+                          <input type="text" id="nit" name="nit" required="required" class="form-control col-md-7 col-xs-12" onchange="ajax(this.value)" placeholder="SIN GUIONES" onkeypress="return validateInput(event)" onpaste="return false">
                         </div>
                       </div>
                       <div class="form-group">
@@ -174,19 +182,27 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input id="cantidadProducto" class="form-control col-md-7 col-xs-12" type="number" name="cantidadProducto">
                         </div>
-                      </div>                     
-                      <div class="form-group">
+                        <br>
+                        
+                        <div id="alerta" class="alert alert-danger col-md-6" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <strong>Error :</strong> Esta queriendo enviar más productos de los que hay en existencia. El botón para realizar la venta se ha bloqueado hasta que corrija el error.
+                        </div>
+                        
+                      </div> 
+
+                      <!--<div class="form-group">
                         <label for="costoTotal" class="control-label col-md-3 col-sm-3 col-xs-12">Total</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input disabled id="costoTotal" class="form-control col-md-7 col-xs-12" type="number" name="costoTotal">
                         </div>
-                      </div>
+                      </div> -->
                       
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">                          
                           <button class="btn btn-primary" type="reset">Limpiar</button>
-                          <button type="submit" class="btn btn-success" name="insertar-venta-transaccion">Crear Venta</button>
+                          <button type="submit" class="btn btn-success" id="crear" name="insertar-venta-transaccion">Crear Venta</button>
                         </div>
                       </div>
 
@@ -250,6 +266,30 @@
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
     <script>
+    $(document).ready(function(){
+      $("#alerta").hide();      
+      // alerta por si lo despachado es mayor que la existencia en formulario de nuevo desactivada
+      $("#cantidadProducto").blur(function(){
+        var cantidadInput = parseInt($("#cantidadProducto").val());
+        var existencia = parseInt($("#existenciaDB").val());
+        //alert("Cantidad en el input: "+cantidadInput +" existencia: "+existencia);
+        if(cantidadInput > existencia)
+        {
+          $("#alerta").show();
+          $('#crear').attr("disabled", true);
+          return false;
+        }
+        if(!(cantidadInput > existencia))
+        {
+          $("#alerta").hide();
+          $('#crear').attr("disabled", false);
+          return false;
+        } 
+      });      
+    });
+    </script>
+
+    <script>
       function ajax(str){
             var peticion;
 
@@ -311,6 +351,31 @@
             peticion.send();
         }
     </script>
+    <script type="text/javascript">
+     // funcion para validar que solo ingresen numeros en el nit
+        function validateInput(e)
+        {
+            key = e.keyCode || e.which;
+            teclado = String.fromCharCode(key);
+            caracteres = "0123456789";
+            especiales = "8-37-38-46-164";
+            teclado_especial = false;
+
+                for(var i in especiales)
+                {
+                    if(key==especiales[i])
+                    {
+                        teclado_especial = true;
+                        break;
+                    }
+                }
+
+                if(caracteres.indexOf(teclado) == -1 && !teclado_especial)
+                {
+                    return false;
+                }
+        }
+  </script>
 	
   </body>
 </html>

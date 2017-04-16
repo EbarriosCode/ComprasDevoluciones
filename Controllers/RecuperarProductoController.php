@@ -12,7 +12,7 @@
 				echo "<option value='$item[idProducto]'>".$item['nombreProducto']." Marca ".$item['nombreMarca']." Precio Unitario Q.".$item['precio']."</option>";				
 		}
 		echo "</select>";
-		echo "<input type='hidden' id='existencia' name='existencia' value='$item[existencia]'/>";		
+		echo "<input type='hidden' id='existenciaDB' name='existenciaDB' value='$item[existencia]'/>";		
 		echo "<label class='label label-primary'>Cantidad en existencia ".$item['existencia']."</label>";
 	}
 	else{

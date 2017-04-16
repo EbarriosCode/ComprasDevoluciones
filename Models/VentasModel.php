@@ -3,9 +3,9 @@
 
 	class Ventas extends Conexion
 	{
-		public function insertVentas($fecha,$documento,$idCliente,$idProducto,$cantidad)
+		public function insertVentas($fecha,$idCliente,$idProducto,$cantidad)
 		{
-			$sql = "CALL sp_TransaccionVentas('$fecha','$documento',$idCliente,$idProducto,$cantidad)";
+			$sql = "CALL sp_TransaccionVentas('$fecha',$idCliente,$idProducto,$cantidad)";
 			$stmt = Conexion::Conectar()->prepare($sql);
 
 			if($stmt->execute())
@@ -21,7 +21,7 @@
 		{ 	
 			if($inicio!==false && $no_registros!==false)
 			{
-				$sql = "SELECT V.idVenta,V.fecha,V.documento,V.idCliente,C.nombreCliente,
+				$sql = "SELECT V.idVenta,V.fecha,V.idCliente,C.nombreCliente,
 				               DV.idProducto,P.nombreProducto,DV.cantidad,DV.precio,DV.costoTotal						       
 						FROM ventas V
 						INNER JOIN ventasdetalle DV ON V.idVenta = DV.idVenta
@@ -30,7 +30,7 @@
 					    	ORDER BY V.idVenta DESC LIMIT $inicio,$no_registros";
 			}
 			else{
-				$sql = "SELECT V.idVenta,V.fecha,V.documento,V.idCliente,C.nombreCliente,
+				$sql = "SELECT V.idVenta,V.fecha,V.idCliente,C.nombreCliente,
 				               DV.idProducto,P.nombreProducto,DV.cantidad,DV.precio,DV.costoTotal						       
 						FROM ventas V
 						INNER JOIN ventasdetalle DV ON V.idVenta = DV.idVenta
