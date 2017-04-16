@@ -61,20 +61,20 @@
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="index.html">Dashboard</a></li>
+                      <li><a href="indexController.php">Dashboard</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-desktop"></i> Transacciones <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="general_elements.html">Ventas</a></li>
-                      <li><a href="media_gallery.html">Devoluciones</a></li>                      
+                      <li><a href="VentasController.php">Ventas</a></li>
+                      <li><a href="DevolucionesController.php">Devoluciones</a></li>                      
                     </ul>
                   </li>
                   <li><a><i class="fa fa-edit"></i> Mantenimientos <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="../Controllers/ProductosController.php">Productos</a></li>
-                      <li><a href="form_advanced.html">Clientes</a></li>
-                      <li><a href="form_validation.html">Usuarios</a></li>                      
+                    <ul class="nav child_menu">                      
+                      <li><a href="ClientesController.php">Clientes</a></li>
+                      <li><a href="ProductosController.php">Productos</a></li>
+                      <li><a href="MarcasController.php">Marcas Productos</a></li>                      
                     </ul>
                   </li>                                   
                               
@@ -83,6 +83,7 @@
 
             </div>
             <!-- /sidebar menu -->
+
 
             <!-- /menu footer buttons -->
             <div class="sidebar-footer hidden-small">            
