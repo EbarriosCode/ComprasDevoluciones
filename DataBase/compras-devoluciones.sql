@@ -24,7 +24,7 @@ DELIMITER $$
 --
 -- Procedimientos
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `debug` (IN `existencia` INT, IN `idPro` INT)  BEGIN
+CREATE PROCEDURE `debug` (IN `existencia` INT, IN `idPro` INT)  BEGIN
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION
  BEGIN
@@ -44,7 +44,7 @@ START TRANSACTION;
 COMMIT;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_TransaccionVentas` (IN `Fecha` DATE, IN `IdCliente` INT, IN `IdProducto` INT, IN `Cantidad` INT)  BEGIN
+CREATE PROCEDURE `sp_TransaccionVentas` (IN `Fecha` DATE, IN `IdCliente` INT, IN `IdProducto` INT, IN `Cantidad` INT)  BEGIN
 	 DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	 BEGIN
 	 SHOW ERRORS LIMIT 1;

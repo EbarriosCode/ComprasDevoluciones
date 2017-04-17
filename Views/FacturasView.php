@@ -50,22 +50,22 @@
 
 </head>
 <body>
-	<h6 class="nota-credito">NOTA DE CRÉDITO <br>Serie A12</h6>
+	<h6 class="nota-credito">NOTA DE CREDITO <br>Serie A12</h6>
 	<div class="container">
 		<?php if(strlen($NoDocumento) == 1){ ?>
-		<h2 class="titulo">Factura Número 000<?php echo $NoDocumento; ?></h2>
+		<h2 class="titulo">Factura No. 000<?php echo $NoDocumento; ?></h2>
 		<?php } ?>
 
 		<?php if(strlen($NoDocumento) == 2){ ?>
-		<h2 class="titulo">Factura Número 00<?php echo $NoDocumento; ?></h2>
+		<h2 class="titulo">Factura No. 00<?php echo $NoDocumento; ?></h2>
 		<?php } ?>
 
 		<?php if(strlen($NoDocumento) == 3){ ?>
-		<h2 class="titulo">Factura Número 0<?php echo $NoDocumento; ?></h2>
+		<h2 class="titulo">Factura No. 0<?php echo $NoDocumento; ?></h2>
 		<?php } ?>
 
 		<?php if(strlen($NoDocumento) == 4){ ?>
-		<h2 class="tiulo">Factura Número <?php echo $NoDocumento; ?></h2>
+		<h2 class="tiulo">Factura No. <?php echo $NoDocumento; ?></h2>
 		<?php } ?>
 		<hr>
 		
@@ -75,13 +75,13 @@
 				<h5>Fecha: <?php echo $item['fecha']; ?></h5>
 				<h5>Cliente: <?php echo $item['nombreCliente']; ?></h5>
 				<h5>Nit: <?php echo $item['nit']; ?></h5>
-				<h5>Dirección: <?php echo $item['direccion'].", ".$item['nombreMunicipio'].", ".$item['nombreDepartamento']; ?></h5>
+				<h5>Direccion: <?php echo $item['direccion'].", ".$item['nombreMunicipio'].", ".$item['nombreDepartamento']; ?></h5>
 			
 		<?php endforeach; ?>
 		
 		<table>
 			<tr>
-				<th>Código</th>
+				<th>Codigo</th>
 				<th>Descripción</th>
 				<th>Cantidad</th>
 				<th>Precio Unitario</th>

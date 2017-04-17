@@ -153,7 +153,7 @@
                      <td><?php echo $item['nombreMarca']; ?></td>
                      <td class="text-right"><button type="button" class="btn btn-round btn-success" data-toggle='modal' data-target='#modal-editar' onclick="CargarDatos('<?php echo $item['idProducto'];?>','<?php echo $item['codigoProducto']; ?>','<?php echo $item['nombreProducto']; ?>','<?php echo $item['descripcion'];?>','<?php echo $item['precio'];?>','<?php echo $item['costo'];?>','<?php echo $item['existencia'];?>','<?php echo $item['idMarca'];?>');"><i class="fa fa-edit"></i> Editar</button>
                      </td>
-                     <td class="text-left"><button  type="button" class="btn btn-round btn-danger" onclick="confirmarRegistro('<?php echo $item['idProducto'];?>');"><i class="fa fa-trash"></i> Borrar</button>
+                     <td class="text-left"><button disabled type="button" class="btn btn-round btn-danger" onclick="confirmarRegistro('<?php echo $item['idProducto'];?>');"><i class="fa fa-trash"></i> Borrar</button>
                      </td>
 
                    </tr> 
@@ -316,7 +316,7 @@
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
     <script>
-//funcion para cargar datos en el modal de editar
+    //funcion para cargar datos en el modal de editar
         function CargarDatos(id,codigo,producto,descripcion,precio,costo,existencia,idMarca)
         {
             $("#idProducto").val(id);

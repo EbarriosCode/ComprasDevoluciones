@@ -65,6 +65,8 @@
 		if(strcmp($_GET['accion'],"borrar") == 0 ){
 			$idProducto = $_GET['idProducto'];
 
+
+
 			$bool = $inst->deleteProductos($idProducto);
 			if ($bool) {
 				echo "<script>alert('Registro Borrado Correctamente');";
@@ -73,6 +75,7 @@
 			else
 			{
 				echo "<script>alert('No se borro ningún registro');";
+				echo "window.location.href='ProductosController.php'</script>";
 			}
 		}
 	}
