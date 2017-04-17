@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-04-2017 a las 23:32:36
+-- Tiempo de generación: 17-04-2017 a las 09:32:42
 -- Versión del servidor: 10.1.16-MariaDB
 -- Versión de PHP: 7.0.9
 
@@ -19,6 +19,68 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `compras-devoluciones`
 --
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `debug` (IN `existencia` INT, IN `idPro` INT)  BEGIN
+
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+ BEGIN
+ SHOW ERRORS LIMIT 1;
+ ROLLBACK;
+ END; 
+ DECLARE EXIT HANDLER FOR SQLWARNING
+ BEGIN
+ SHOW WARNINGS LIMIT 1;
+ ROLLBACK;
+ END;
+
+ 
+START TRANSACTION;
+   insert into productos values('transaccion','transaccion',100,100,100,2);
+   update productos set existencia=existencia where idProducto=idPro;
+COMMIT;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_TransaccionVentas` (IN `Fecha` DATE, IN `IdCliente` INT, IN `IdProducto` INT, IN `Cantidad` INT)  BEGIN
+	 DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	 BEGIN
+	 SHOW ERRORS LIMIT 1;
+	 ROLLBACK;
+	 END; 
+	 
+     DECLARE EXIT HANDLER FOR SQLWARNING
+	 BEGIN
+	 SHOW WARNINGS LIMIT 1;
+	 ROLLBACK;
+	 END;
+		
+	START TRANSACTION;    
+		/* insertar en la tabla ventas */
+		INSERT INTO ventas(fecha,idCliente) VALUES(Fecha,IdCliente);
+		SELECT @idVenta := MAX(idVenta) FROM ventas;
+		
+        SELECT @idProducto := IdProducto;
+		SELECT @precio := (SELECT P.precio FROM productos P WHERE P.idProducto = @idProducto);        
+		SELECT @cantidad := Cantidad;        
+		SELECT @costoTotal := (@cantidad*@precio);   
+                
+		 /*insertar el detalle en la tabla ventasdetalle */
+		INSERT INTO ventasdetalle(idVenta,idProducto,cantidad,precio,costoTotal,impresoPagado)VALUES(@idVenta,@idProducto,@cantidad,@precio,@costoTotal,0);
+		
+        SELECT @existencia := (SELECT P.existencia FROM productos P WHERE P.idProducto = @idProducto);        
+        /*select if(@existencia < @cantidad,'No hay productos','Si seguir con la transaccion');*/
+        
+        
+		/* descontar la existencia de la tabla productos */
+		UPDATE productos P SET P.existencia = P.existencia-@cantidad WHERE P.idProducto = @idProducto;
+		
+    COMMIT; 
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -41,7 +103,12 @@ CREATE TABLE `clientes` (
 
 INSERT INTO `clientes` (`IdCliente`, `nombreCliente`, `nit`, `direccion`, `telefono`, `idMunicipio`) VALUES
 (1, 'Eduardo Barrios', '12345', '5ta calle 9-42', '54441004', 1),
-(2, 'Mario Castillo', '098765-2', 'Zona 2', '58655820', 5);
+(2, 'Mario Castillo', '09872', 'Zona 2', '58655820', 5),
+(3, 'Jorge Mendizabal', '5555', 'zona 2 4-32', '43459287', 2),
+(4, 'Elmer del Cid ', '567777', 'San luis colonia el rosario', '12343322', 17),
+(5, 'Alexander Ramirez', '990033421', '2 avenida zona 1', '54332211', 7),
+(7, 'Carlos Herrera Lopez', '6534', 'Finca San Jorge Zona 5', '25432210', 17),
+(9, 'Diego Carlos Jimenez', '435422', '4ta calle 8-31', '32453321', 9);
 
 -- --------------------------------------------------------
 
@@ -100,7 +167,9 @@ CREATE TABLE `marcaproductos` (
 
 INSERT INTO `marcaproductos` (`idMarca`, `nombreMarca`) VALUES
 (1, 'Chenson'),
-(2, 'JanSports');
+(2, 'JanSports'),
+(3, 'Puma'),
+(4, 'MTV');
 
 -- --------------------------------------------------------
 
@@ -213,11 +282,12 @@ INSERT INTO `pais` (`idPais`, `nombrePais`) VALUES
 
 CREATE TABLE `productos` (
   `idProducto` int(11) NOT NULL,
+  `codigoProducto` varchar(100) NOT NULL,
   `nombreProducto` varchar(100) NOT NULL,
   `descripcion` varchar(255) NOT NULL,
   `precio` float NOT NULL,
   `costo` float NOT NULL,
-  `existencia` int(11) UNSIGNED NOT NULL,
+  `existencia` int(11) NOT NULL,
   `idMarca` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -225,9 +295,16 @@ CREATE TABLE `productos` (
 -- Volcado de datos para la tabla `productos`
 --
 
-INSERT INTO `productos` (`idProducto`, `nombreProducto`, `descripcion`, `precio`, `costo`, `existencia`, `idMarca`) VALUES
-(1, 'Mochila ', 'Mochila azul 4 bolsas', 250, 150, 10, 1),
-(2, 'Maleta', 'Maleta para laptop', 300, 200, 20, 2);
+INSERT INTO `productos` (`idProducto`, `codigoProducto`, `nombreProducto`, `descripcion`, `precio`, `costo`, `existencia`, `idMarca`) VALUES
+(1, 'M001', 'Mochila ', 'Mochila azul 4 bolsas', 250, 150, 92, 1),
+(2, 'M002', 'Maleta', 'Maleta para laptop', 300, 200, 18, 2),
+(3, 'C001', 'Cartuchera', 'Juego de cartucheras escolares', 150, 100, 78, 1),
+(8, 'M003', 'Maletin ', 'Maletín para Cañonera', 500, 400, 28, 4),
+(9, 'C002', 'Cartera pequeña', 'Cartera de mano para dama', 300, 150, 25, 3),
+(10, 'N001', 'nuevo', 'nuevo descripcion del producto nuevo', 100, 100, 75, 1),
+(11, 'N002', 'nuevo segundo', 'nuevo segundo', 400, 200, 100, 2),
+(13, 'P001', 'producto de prueba', 'prueba', 10, 10, 46, 2),
+(16, 'K-0123', 'mk', 'reloj', 500, 450, 48, 4);
 
 -- --------------------------------------------------------
 
@@ -238,9 +315,20 @@ INSERT INTO `productos` (`idProducto`, `nombreProducto`, `descripcion`, `precio`
 CREATE TABLE `ventas` (
   `idVenta` int(11) NOT NULL,
   `fecha` date NOT NULL,
-  `documento` varchar(50) NOT NULL,
   `idCliente` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `ventas`
+--
+
+INSERT INTO `ventas` (`idVenta`, `fecha`, `idCliente`) VALUES
+(1, '2017-04-15', 1),
+(2, '2017-04-15', 3),
+(3, '2017-04-15', 4),
+(4, '2017-04-16', 7),
+(5, '2017-04-16', 3),
+(6, '2017-04-16', 4);
 
 -- --------------------------------------------------------
 
@@ -254,8 +342,21 @@ CREATE TABLE `ventasdetalle` (
   `idProducto` int(11) NOT NULL,
   `cantidad` int(11) NOT NULL,
   `precio` float NOT NULL,
-  `costoTotal` float NOT NULL
+  `costoTotal` float NOT NULL,
+  `impresoPagado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `ventasdetalle`
+--
+
+INSERT INTO `ventasdetalle` (`idVentasDetalle`, `idVenta`, `idProducto`, `cantidad`, `precio`, `costoTotal`, `impresoPagado`) VALUES
+(1, 1, 1, 2, 250, 500, 0),
+(2, 2, 3, 2, 150, 300, 0),
+(3, 3, 2, 2, 300, 600, 0),
+(4, 4, 16, 2, 500, 1000, 1),
+(5, 5, 13, 2, 10, 20, 1),
+(6, 6, 13, 2, 10, 20, 1);
 
 --
 -- Índices para tablas volcadas
@@ -324,7 +425,7 @@ ALTER TABLE `ventasdetalle`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `IdCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `IdCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT de la tabla `departamento`
 --
@@ -334,7 +435,7 @@ ALTER TABLE `departamento`
 -- AUTO_INCREMENT de la tabla `marcaproductos`
 --
 ALTER TABLE `marcaproductos`
-  MODIFY `idMarca` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idMarca` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `municipio`
 --
@@ -349,17 +450,17 @@ ALTER TABLE `pais`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `idProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `idVenta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idVenta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT de la tabla `ventasdetalle`
 --
 ALTER TABLE `ventasdetalle`
-  MODIFY `idVentasDetalle` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idVentasDetalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
