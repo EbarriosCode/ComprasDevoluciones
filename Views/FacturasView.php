@@ -50,7 +50,7 @@
 
 </head>
 <body>
-	<h6 class="nota-credito">NOTA DE CREDITO <br>Serie A12</h6>
+	<h6 class="nota-credito">FACTURA <br>Serie A12</h6>
 	<div class="container">
 		<?php if(strlen($NoDocumento) == 1){ ?>
 		<h2 class="titulo">Factura No. 000<?php echo $NoDocumento; ?></h2>
