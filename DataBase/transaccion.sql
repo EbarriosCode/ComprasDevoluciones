@@ -119,6 +119,3 @@ CALL sp_TransaccionDevoluciones(curdate(),1,1,1,1);
 
 truncate table devoluciones;
 truncate table devolucionesdetalle;
-
-
-drop table tabla_ejemplo1 

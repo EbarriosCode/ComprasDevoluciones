@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-04-2017 a las 09:32:42
+-- Tiempo de generación: 19-04-2017 a las 00:31:04
 -- Versión del servidor: 10.1.16-MariaDB
 -- Versión de PHP: 7.0.9
 
@@ -24,7 +24,7 @@ DELIMITER $$
 --
 -- Procedimientos
 --
-CREATE PROCEDURE `debug` (IN `existencia` INT, IN `idPro` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `debug` (IN `existencia` INT, IN `idPro` INT)  BEGIN
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION
  BEGIN
@@ -44,7 +44,63 @@ START TRANSACTION;
 COMMIT;
 END$$
 
-CREATE PROCEDURE `sp_TransaccionVentas` (IN `Fecha` DATE, IN `IdCliente` INT, IN `IdProducto` INT, IN `Cantidad` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_existeVenta_diferenciaFechas` (IN `documento` INT(11), IN `fechaHoy` DATE, OUT `diferenciaDias` INT(11))  BEGIN
+	
+    SET @fechaVenta := (SELECT VF.fecha FROM ventas VF WHERE VF.idVenta=documento);
+	SET diferenciaDias := DATEDIFF(fechaHoy,@fechaVenta); 
+    /*SELECT V.idVenta,V.fecha,diferencia FROM ventas V WHERE V.idVenta=documento;*/
+	SELECT V.idVenta,V.fecha,V.idCliente,C.nombreCliente,VD.idProducto,
+	   P.codigoProducto,P.nombreProducto,M.nombreMarca,P.descripcion,VD.precio,VD.cantidad,
+       VD.costoTotal,VD.impresoPagado,diferenciaDias
+	FROM ventas V 
+	INNER JOIN clientes C ON V.idCliente = C.idCliente
+	INNER JOIN ventasdetalle VD ON V.idVenta = VD.idVenta
+	INNER JOIN productos P ON VD.idProducto = P.idProducto
+	INNER JOIN marcaproductos M ON P.idMarca = M.idMarca
+    /*INNER JOIN devoluciones D ON VD.idVenta = D.idVenta*/
+	WHERE V.idVenta=documento;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_TransaccionDevoluciones` (IN `Fecha` DATE, IN `Documento` INT, IN `IdProducto` INT, IN `Cantidad` INT, IN `IdCliente` INT)  BEGIN
+	 DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	 BEGIN
+	 SHOW ERRORS LIMIT 1;
+	 ROLLBACK;
+	 END; 
+	 
+     DECLARE EXIT HANDLER FOR SQLWARNING
+	 BEGIN
+	 SHOW WARNINGS LIMIT 1;
+	 ROLLBACK;
+	 END;
+		
+	START TRANSACTION;    
+		/* insertar en la tabla devoluciones */
+		INSERT INTO devoluciones(fechaDevolucion,idVenta) VALUES(Fecha,Documento);
+		SELECT @idDevolucion := MAX(idDevolucion) FROM devoluciones;
+		
+        SELECT @idProducto := IdProducto;
+		SELECT @precio := (SELECT P.precio FROM productos P WHERE P.idProducto = @idProducto);        
+		SELECT @cantidad := Cantidad;        
+		SELECT @costoTotal := (@cantidad*@precio);   
+                
+		 /*insertar el detalle en la tabla devolucionesdetalle */
+		INSERT INTO devolucionesdetalle(idDevolucion,idProducto,cantidad,precio,costoTotal,idCliente,impreso)
+                                  VALUES(@idDevolucion,@idProducto,@cantidad,@precio,@costoTotal,IdCliente,0);
+		
+        SELECT @existencia := (SELECT P.existencia FROM productos P WHERE P.idProducto = @idProducto);        
+        /*select if(@existencia < @cantidad,'No hay productos','Si seguir con la transaccion');*/
+        
+        
+		/* incrementar la existencia de la tabla productos */
+		UPDATE productos P SET P.existencia = P.existencia+@cantidad WHERE P.idProducto = @idProducto;
+        
+        /* cambiar el estado de impresoPagado en la tabla ventasdetale */
+		UPDATE ventasdetalle VD SET VD.impresoPagado = 2 WHERE VD.idVenta = Documento;
+    COMMIT; 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_TransaccionVentas` (IN `Fecha` DATE, IN `IdCliente` INT, IN `IdProducto` INT, IN `Cantidad` INT, IN `deDevolucion` BOOLEAN)  BEGIN
 	 DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	 BEGIN
 	 SHOW ERRORS LIMIT 1;
@@ -68,7 +124,7 @@ CREATE PROCEDURE `sp_TransaccionVentas` (IN `Fecha` DATE, IN `IdCliente` INT, IN
 		SELECT @costoTotal := (@cantidad*@precio);   
                 
 		 /*insertar el detalle en la tabla ventasdetalle */
-		INSERT INTO ventasdetalle(idVenta,idProducto,cantidad,precio,costoTotal,impresoPagado)VALUES(@idVenta,@idProducto,@cantidad,@precio,@costoTotal,0);
+		INSERT INTO ventasdetalle(idVenta,idProducto,cantidad,precio,costoTotal,impresoPagado,vieneDeDevolucion)VALUES(@idVenta,@idProducto,@cantidad,@precio,@costoTotal,0,deDevolucion);
 		
         SELECT @existencia := (SELECT P.existencia FROM productos P WHERE P.idProducto = @idProducto);        
         /*select if(@existencia < @cantidad,'No hay productos','Si seguir con la transaccion');*/
@@ -106,7 +162,7 @@ INSERT INTO `clientes` (`IdCliente`, `nombreCliente`, `nit`, `direccion`, `telef
 (2, 'Mario Castillo', '09872', 'Zona 2', '58655820', 5),
 (3, 'Jorge Mendizabal', '5555', 'zona 2 4-32', '43459287', 2),
 (4, 'Elmer del Cid ', '567777', 'San luis colonia el rosario', '12343322', 17),
-(5, 'Alexander Ramirez', '990033421', '2 avenida zona 1', '54332211', 7),
+(5, 'Alexander Ramirez', '9900', '2 avenida zona 1', '54332211', 7),
 (7, 'Carlos Herrera Lopez', '6534', 'Finca San Jorge Zona 5', '25432210', 17),
 (9, 'Diego Carlos Jimenez', '435422', '4ta calle 8-31', '32453321', 9);
 
@@ -149,6 +205,63 @@ INSERT INTO `departamento` (`idDepartamento`, `nombreDepartamento`, `idPais`) VA
 (20, 'Escuintla', 1),
 (21, 'Santa Rosa', 1),
 (22, 'Jutiapa', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `devoluciones`
+--
+
+CREATE TABLE `devoluciones` (
+  `idDevolucion` int(11) NOT NULL,
+  `fechaDevolucion` date NOT NULL,
+  `idVenta` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `devoluciones`
+--
+
+INSERT INTO `devoluciones` (`idDevolucion`, `fechaDevolucion`, `idVenta`) VALUES
+(1, '2017-04-17', 1),
+(2, '2017-04-18', 9),
+(3, '2017-04-18', 8),
+(4, '2017-04-18', 10),
+(5, '2017-04-18', 13),
+(6, '2017-04-18', 14),
+(7, '2017-04-18', 17),
+(8, '2017-04-18', 18);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `devolucionesdetalle`
+--
+
+CREATE TABLE `devolucionesdetalle` (
+  `idDevolucionDetalle` int(11) NOT NULL,
+  `idDevolucion` int(11) NOT NULL,
+  `idProducto` int(11) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `precio` float NOT NULL,
+  `costoTotal` float NOT NULL,
+  `idCliente` int(11) NOT NULL,
+  `impreso` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `devolucionesdetalle`
+--
+
+INSERT INTO `devolucionesdetalle` (`idDevolucionDetalle`, `idDevolucion`, `idProducto`, `cantidad`, `precio`, `costoTotal`, `idCliente`, `impreso`) VALUES
+(1, 1, 1, 2, 250, 500, 1, 0),
+(2, 2, 3, 2, 150, 300, 5, 0),
+(3, 3, 2, 1, 300, 300, 7, 0),
+(4, 4, 3, 8, 150, 1200, 1, 0),
+(5, 5, 1, 2, 250, 500, 1, 0),
+(6, 6, 13, 5, 10, 50, 1, 0),
+(7, 7, 9, 1, 300, 300, 3, 0),
+(8, 8, 13, 5, 10, 50, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -296,15 +409,14 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`idProducto`, `codigoProducto`, `nombreProducto`, `descripcion`, `precio`, `costo`, `existencia`, `idMarca`) VALUES
-(1, 'M001', 'Mochila ', 'Mochila azul 4 bolsas', 250, 150, 92, 1),
+(1, 'M001', 'Mochila ', 'Mochila azul 4 bolsas', 250, 150, 98, 1),
 (2, 'M002', 'Maleta', 'Maleta para laptop', 300, 200, 18, 2),
-(3, 'C001', 'Cartuchera', 'Juego de cartucheras escolares', 150, 100, 78, 1),
+(3, 'C001', 'Cartuchera', 'Juego de cartucheras escolares', 150, 100, 80, 1),
 (8, 'M003', 'Maletin ', 'Maletín para Cañonera', 500, 400, 28, 4),
 (9, 'C002', 'Cartera pequeña', 'Cartera de mano para dama', 300, 150, 25, 3),
 (10, 'N001', 'nuevo', 'nuevo descripcion del producto nuevo', 100, 100, 75, 1),
 (11, 'N002', 'nuevo segundo', 'nuevo segundo', 400, 200, 100, 2),
-(13, 'P001', 'producto de prueba', 'prueba', 10, 10, 46, 2),
-(16, 'K-0123', 'mk', 'reloj', 500, 450, 48, 4);
+(13, 'P001', 'producto de prueba', 'prueba', 10, 10, 32, 2);
 
 -- --------------------------------------------------------
 
@@ -326,9 +438,22 @@ INSERT INTO `ventas` (`idVenta`, `fecha`, `idCliente`) VALUES
 (1, '2017-04-15', 1),
 (2, '2017-04-15', 3),
 (3, '2017-04-15', 4),
-(4, '2017-04-16', 7),
+(4, '2017-04-15', 9),
 (5, '2017-04-16', 3),
-(6, '2017-04-16', 4);
+(6, '2017-04-16', 4),
+(7, '2017-04-18', 4),
+(8, '2017-04-18', 7),
+(9, '2017-04-18', 5),
+(10, '2017-04-18', 1),
+(11, '2017-04-18', 5),
+(12, '2017-04-18', 7),
+(13, '2017-04-18', 1),
+(14, '2017-04-18', 1),
+(15, '2017-04-18', 1),
+(16, '2017-04-18', 1),
+(17, '2017-04-18', 3),
+(18, '2017-04-18', 3),
+(19, '2017-04-18', 3);
 
 -- --------------------------------------------------------
 
@@ -343,20 +468,34 @@ CREATE TABLE `ventasdetalle` (
   `cantidad` int(11) NOT NULL,
   `precio` float NOT NULL,
   `costoTotal` float NOT NULL,
-  `impresoPagado` tinyint(1) NOT NULL
+  `impresoPagado` int(1) NOT NULL,
+  `vieneDeDevolucion` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `ventasdetalle`
 --
 
-INSERT INTO `ventasdetalle` (`idVentasDetalle`, `idVenta`, `idProducto`, `cantidad`, `precio`, `costoTotal`, `impresoPagado`) VALUES
-(1, 1, 1, 2, 250, 500, 0),
-(2, 2, 3, 2, 150, 300, 0),
-(3, 3, 2, 2, 300, 600, 0),
-(4, 4, 16, 2, 500, 1000, 1),
-(5, 5, 13, 2, 10, 20, 1),
-(6, 6, 13, 2, 10, 20, 1);
+INSERT INTO `ventasdetalle` (`idVentasDetalle`, `idVenta`, `idProducto`, `cantidad`, `precio`, `costoTotal`, `impresoPagado`, `vieneDeDevolucion`) VALUES
+(1, 1, 1, 2, 250, 500, 2, 0),
+(2, 2, 3, 2, 150, 300, 1, 0),
+(3, 3, 2, 2, 300, 600, 0, 0),
+(4, 4, 13, 2, 500, 1000, 0, 0),
+(5, 5, 13, 2, 10, 20, 1, 0),
+(6, 6, 13, 2, 10, 20, 1, 0),
+(7, 7, 1, 2, 250, 500, 0, 0),
+(8, 8, 2, 1, 300, 300, 2, 0),
+(9, 9, 3, 2, 150, 300, 1, 0),
+(10, 10, 3, 8, 150, 1200, 2, 0),
+(11, 11, 1, 200, 250, 50000, 1, 0),
+(12, 12, 13, 6, 10, 60, 1, 0),
+(13, 13, 1, 2, 250, 500, 2, 0),
+(14, 14, 13, 5, 10, 50, 2, 0),
+(15, 15, 13, 5, 10, 50, 1, 0),
+(16, 16, 1, 2, 250, 500, 1, 1),
+(17, 17, 9, 1, 300, 300, 1, 0),
+(18, 18, 13, 5, 10, 50, 2, 1),
+(19, 19, 13, 3, 10, 30, 1, 1);
 
 --
 -- Índices para tablas volcadas
@@ -375,6 +514,22 @@ ALTER TABLE `clientes`
 ALTER TABLE `departamento`
   ADD PRIMARY KEY (`idDepartamento`),
   ADD KEY `idPais` (`idPais`);
+
+--
+-- Indices de la tabla `devoluciones`
+--
+ALTER TABLE `devoluciones`
+  ADD PRIMARY KEY (`idDevolucion`),
+  ADD KEY `idCliente` (`idVenta`);
+
+--
+-- Indices de la tabla `devolucionesdetalle`
+--
+ALTER TABLE `devolucionesdetalle`
+  ADD PRIMARY KEY (`idDevolucionDetalle`),
+  ADD KEY `idDevolucion` (`idDevolucion`),
+  ADD KEY `idProducto` (`idProducto`),
+  ADD KEY `idCliente` (`idCliente`);
 
 --
 -- Indices de la tabla `marcaproductos`
@@ -432,6 +587,16 @@ ALTER TABLE `clientes`
 ALTER TABLE `departamento`
   MODIFY `idDepartamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
+-- AUTO_INCREMENT de la tabla `devoluciones`
+--
+ALTER TABLE `devoluciones`
+  MODIFY `idDevolucion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT de la tabla `devolucionesdetalle`
+--
+ALTER TABLE `devolucionesdetalle`
+  MODIFY `idDevolucionDetalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
 -- AUTO_INCREMENT de la tabla `marcaproductos`
 --
 ALTER TABLE `marcaproductos`
@@ -450,17 +615,17 @@ ALTER TABLE `pais`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `idProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `idProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `idVenta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idVenta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT de la tabla `ventasdetalle`
 --
 ALTER TABLE `ventasdetalle`
-  MODIFY `idVentasDetalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idVentasDetalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

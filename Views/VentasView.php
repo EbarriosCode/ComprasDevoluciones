@@ -169,7 +169,7 @@
                       <?php if(!$item['vieneDeDevolucion']){ ?>
                         <a target="_blank" href="FacturasController.php?noFactura=<?php echo $item["idVenta"]; ?>"><button id="imprimir" type="button" class="btn btn-round btn-primary" onclick="setImpresoPagado('<?php echo $item["idVenta"]; ?>')" <?php if($item['impresoPagado'] == 1 || $item['impresoPagado'] == 2) {?> disabled <?php } ?>><i class="fa fa-print"></i> Imprimir</button></a>
                       <?php }else{ ?>
-                        <a target="_blank" href="FacturaDevolucionController.php?noFactura=<?php echo $item["idVenta"]; ?>"><button id="imprimir" type="button" class="btn btn-round btn-primary" onclick="setImpresoPagado('<?php echo $item["idVenta"]; ?>')" <?php if($item['impresoPagado'] == 1 || $item['impresoPagado'] == 2) {?> disabled <?php } ?>><i class="fa fa-print"></i> Imprimir</button></a>
+                        <a target="_blank" href="FacturaNuevaDevolucionController.php?noFactura=<?php echo $item["idVenta"]; ?>"><button id="imprimir" type="button" class="btn btn-round btn-primary" onclick="setImpresoPagado('<?php echo $item["idVenta"]; ?>')" <?php if($item['impresoPagado'] == 1 || $item['impresoPagado'] == 2) {?> disabled <?php } ?>><i class="fa fa-print"></i> Imprimir</button></a>
                       <?php } ?>  
                      </td>
                      <td class="ocultar"><?php  echo $item['vieneDeDevolucion'] ? 'SI' : "NO"; ?></td>
