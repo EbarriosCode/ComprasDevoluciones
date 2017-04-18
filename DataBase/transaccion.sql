@@ -42,7 +42,7 @@ BEGIN
 END $$
     
 DROP PROCEDURE sp_TransaccionVentas;
-CALL sp_TransaccionVentas(curdate(),1,1,2);
+CALL sp_TransaccionVentas(curdate(),1,1,2,true);
 
 truncate table ventas;
 truncate table ventasdetalle;
