@@ -101,4 +101,20 @@ CALL sp_TransaccionVentas(curdate(),1,1,2);
 truncate table ventas;
 truncate table ventasdetalle;
 
-SELECT DATEDIFF('2017-01-15', '2016-01-15');
+
+-- procedimiento que valida si existe una venta y devuelve la diferencia de dias de una devolucion y venta
+DELIMITER $$
+CREATE PROCEDURE sp_existeVenta_diferenciaFechas
+(IN documento INT(11),IN fechaHoy DATE,OUT diferencia INT(11))
+BEGIN
+	SELECT V.idVenta,V.fecha FROM ventas V WHERE V.idVenta=documento;
+    SET @fechaVenta := (SELECT VF.fecha FROM ventas VF WHERE VF.idVenta=documento);
+	SET diferencia := DATEDIFF(fechaHoy,@fechaVenta); 
+    SELECT diferencia; 
+
+END $$
+
+DROP PROCEDURE sp_existeVenta_diferenciaFechas;
+CALL sp_existeVenta_diferenciaFechas(1,curdate(),@diferencia);
+
+
