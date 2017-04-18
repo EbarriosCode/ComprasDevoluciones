@@ -107,14 +107,14 @@ DELIMITER $$
 CREATE PROCEDURE sp_existeVenta_diferenciaFechas
 (IN documento INT(11),IN fechaHoy DATE,OUT diferencia INT(11))
 BEGIN
-	SELECT V.idVenta,V.fecha FROM ventas V WHERE V.idVenta=documento;
+	
     SET @fechaVenta := (SELECT VF.fecha FROM ventas VF WHERE VF.idVenta=documento);
 	SET diferencia := DATEDIFF(fechaHoy,@fechaVenta); 
-    SELECT diferencia; 
+    SELECT V.idVenta,V.fecha,diferencia FROM ventas V WHERE V.idVenta=documento;
 
 END $$
 
 DROP PROCEDURE sp_existeVenta_diferenciaFechas;
-CALL sp_existeVenta_diferenciaFechas(1,curdate(),@diferencia);
+CALL sp_existeVenta_diferenciaFechas(6,curdate(),@diferencia);
 
 
