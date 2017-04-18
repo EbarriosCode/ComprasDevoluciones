@@ -4,7 +4,7 @@ show engines;
 -- procedimiento almacenado con transaccion para realizar una venta
 DELIMITER $$
 CREATE PROCEDURE sp_TransaccionVentas
-(IN Fecha date,IN IdCliente int,IN IdProducto int,IN Cantidad int)
+(IN Fecha date,IN IdCliente int,IN IdProducto int,IN Cantidad int,IN deDevolucion BOOLEAN)
 BEGIN
 	 DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	 BEGIN
@@ -29,7 +29,7 @@ BEGIN
 		SELECT @costoTotal := (@cantidad*@precio);   
                 
 		 /*insertar el detalle en la tabla ventasdetalle */
-		INSERT INTO ventasdetalle(idVenta,idProducto,cantidad,precio,costoTotal,impresoPagado)VALUES(@idVenta,@idProducto,@cantidad,@precio,@costoTotal,0);
+		INSERT INTO ventasdetalle(idVenta,idProducto,cantidad,precio,costoTotal,impresoPagado,vieneDeDevolucion)VALUES(@idVenta,@idProducto,@cantidad,@precio,@costoTotal,0,deDevolucion);
 		
         SELECT @existencia := (SELECT P.existencia FROM productos P WHERE P.idProducto = @idProducto);        
         /*select if(@existencia < @cantidad,'No hay productos','Si seguir con la transaccion');*/
@@ -58,17 +58,18 @@ BEGIN
     /*SELECT V.idVenta,V.fecha,diferencia FROM ventas V WHERE V.idVenta=documento;*/
 	SELECT V.idVenta,V.fecha,V.idCliente,C.nombreCliente,VD.idProducto,
 	   P.codigoProducto,P.nombreProducto,M.nombreMarca,P.descripcion,VD.precio,VD.cantidad,
-       VD.costoTotal,diferenciaDias
+       VD.costoTotal,VD.impresoPagado,diferenciaDias
 	FROM ventas V 
 	INNER JOIN clientes C ON V.idCliente = C.idCliente
 	INNER JOIN ventasdetalle VD ON V.idVenta = VD.idVenta
 	INNER JOIN productos P ON VD.idProducto = P.idProducto
 	INNER JOIN marcaproductos M ON P.idMarca = M.idMarca
+    /*INNER JOIN devoluciones D ON VD.idVenta = D.idVenta*/
 	WHERE V.idVenta=documento;
 END $$
 
 DROP PROCEDURE sp_existeVenta_diferenciaFechas;
-CALL sp_existeVenta_diferenciaFechas(6,curdate(),@diferencia);
+CALL sp_existeVenta_diferenciaFechas(4,curdate(),@diferencia);
 
 -- procedimiento almacenado con transaccion para realizar una devolucion
 DELIMITER $$
@@ -89,7 +90,7 @@ BEGIN
 		
 	START TRANSACTION;    
 		/* insertar en la tabla devoluciones */
-		INSERT INTO devoluciones(fecha,idVenta) VALUES(Fecha,Documento);
+		INSERT INTO devoluciones(fechaDevolucion,idVenta) VALUES(Fecha,Documento);
 		SELECT @idDevolucion := MAX(idDevolucion) FROM devoluciones;
 		
         SELECT @idProducto := IdProducto;
@@ -114,7 +115,10 @@ BEGIN
 END $$
     
 DROP PROCEDURE sp_TransaccionDevoluciones;
-CALL sp_TransaccionDevoluciones(curdate(),2,3,2,3);
+CALL sp_TransaccionDevoluciones(curdate(),1,1,1,1);
 
 truncate table devoluciones;
 truncate table devolucionesdetalle;
+
+
+drop table tabla_ejemplo1 

@@ -1,5 +1,5 @@
 <?php 
-	require_once('../Models/NuevaDevolucionModel.php');
+	require_once('../Models/DevolucionesModel.php');
 	$inst = new Devoluciones();
 	$factura = $_GET['NoDocumento'];
 
@@ -20,10 +20,13 @@
 					}
 					
 				echo "<script>";
+						
 						echo "$('#alerta-factura-ya-devuelta').show();";
 						echo "$('#alerta').hide();";	
 						echo "$('#alerta-exceso-dias').hide();";		
 						echo "$('#devolver').attr('disabled',true);";
+						echo "$('#codigoProductoNuevo').prop('disabled',true);";
+						echo "$('#cantidadProductoNuevo').prop('disabled',true);";
 				echo "</script>";
 			}
 			else
@@ -73,6 +76,8 @@
 							echo "$('#alerta-factura-ya-devuelta').hide();";
 							echo "$('#alerta-exceso-dias').hide();";			
 							echo "$('#devolver').attr('disabled',false);";
+							echo "$('#codigoProductoNuevo').prop('disabled',false);";
+						echo "$('#cantidadProductoNuevo').prop('disabled',false);";
 					echo "</script>";
 				}	
 			}
@@ -87,6 +92,8 @@
 				echo "$('#alerta-exceso-dias').hide();";
 				echo "$('#alerta-factura-ya-devuelta').hide();";			
 				echo "$('#devolver').attr('disabled',true);";
+				echo "$('#codigoProductoNuevo').prop('disabled',true);";
+				echo "$('#cantidadProductoNuevo').prop('disabled',true);";
 		echo "</script>";	
 	}
  ?>

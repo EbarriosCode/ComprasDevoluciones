@@ -3,9 +3,9 @@
 
 	class Ventas extends Conexion
 	{
-		public function insertVentas($fecha,$idCliente,$idProducto,$cantidad)
+		public function insertVentas($fecha,$idCliente,$idProducto,$cantidad,$vieneDeDevolucion)
 		{
-			$sql = "CALL sp_TransaccionVentas('$fecha',$idCliente,$idProducto,$cantidad)";
+			$sql = "CALL sp_TransaccionVentas('$fecha',$idCliente,$idProducto,$cantidad,'$vieneDeDevolucion');";
 			$stmt = Conexion::Conectar()->prepare($sql);
 
 			if($stmt->execute())
@@ -22,7 +22,7 @@
 			if($desde!==false && $hasta!==false)
 			{
 				$sql = "SELECT V.idVenta,V.fecha,V.idCliente,C.nombreCliente,
-				               DV.idProducto,P.nombreProducto,DV.cantidad,DV.precio,DV.costoTotal,DV.impresoPagado		   
+				               DV.idProducto,P.nombreProducto,DV.cantidad,DV.precio,DV.costoTotal,DV.impresoPagado,DV.vieneDeDevolucion		   
 						FROM ventas V
 						INNER JOIN ventasdetalle DV ON V.idVenta = DV.idVenta
 						INNER JOIN clientes C ON V.idCliente = C.idCliente
@@ -32,7 +32,7 @@
 			}
 			else{
 				$sql = "SELECT V.idVenta,V.fecha,V.idCliente,C.nombreCliente,
-				               DV.idProducto,P.nombreProducto,DV.cantidad,DV.precio,DV.costoTotal,DV.impresoPagado						       
+				               DV.idProducto,P.nombreProducto,DV.cantidad,DV.precio,DV.costoTotal,DV.impresoPagado,DV.vieneDeDevolucion		   						       
 						FROM ventas V
 						INNER JOIN ventasdetalle DV ON V.idVenta = DV.idVenta
 						INNER JOIN clientes C ON V.idCliente = C.idCliente

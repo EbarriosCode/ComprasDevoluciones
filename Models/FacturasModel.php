@@ -5,7 +5,9 @@
 	{
 		public function getVenta($idVenta)
 		{ 				
-			$sql = "SELECT V.idVenta,V.fecha,V.idCliente,C.nombreCliente,C.nit,C.direccion,M.nombreMunicipio,							   D.nombreDepartamento,DV.idProducto,P.nombreProducto,P.codigoProducto,P.descripcion,MP.nombreMarca,DV.cantidad,DV.precio,DV.costoTotal				
+			$sql = "SELECT V.idVenta,V.fecha,V.idCliente,C.nombreCliente,C.nit,C.direccion,M.nombreMunicipio,							   
+					       D.nombreDepartamento,DV.idProducto,P.nombreProducto,P.codigoProducto,P.descripcion,
+					       MP.nombreMarca,DV.cantidad,DV.precio,DV.costoTotal				
 					FROM ventas V
 					INNER JOIN ventasdetalle DV ON V.idVenta = DV.idVenta
 					INNER JOIN clientes C ON V.idCliente = C.idCliente

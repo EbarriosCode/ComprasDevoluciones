@@ -26,6 +26,11 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+    <style type="text/css">
+          .ocultar{
+            display: none;
+          }
+    </style>
   
   </head>
 
@@ -144,6 +149,7 @@
                     <th>Cantidad</th>
                     <th>Total</th>
                     <th class="text-center">Factura</th>
+                    <th class="ocultar">Viene de devolucion</th>
                   </tr>
 
                   <?php foreach($Ventas as $item): ?>
@@ -159,8 +165,14 @@
                      <td><?php echo $item['precio']; ?></td>
                      <td><?php echo $item['cantidad']; ?></td>
                      <td><?php echo $item['costoTotal']; ?></td>                     
-                     <td class="text-center"><a target="_blank" href="FacturasController.php?noFactura=<?php echo $item["idVenta"]; ?>" <?php if($item['impresoPagado'] != 0) echo 'disabled'; ?>><button id="imprimir" type="button" class="btn btn-round btn-primary" onclick="setImpresoPagado('<?php echo $item["idVenta"]; ?>')"><i class="fa fa-print"></i> Imprimir</button></a>
+                     <td class="text-center">
+                      <?php if(!$item['vieneDeDevolucion']){ ?>
+                        <a target="_blank" href="FacturasController.php?noFactura=<?php echo $item["idVenta"]; ?>"><button id="imprimir" type="button" class="btn btn-round btn-primary" onclick="setImpresoPagado('<?php echo $item["idVenta"]; ?>')" <?php if($item['impresoPagado'] == 1 || $item['impresoPagado'] == 2) {?> disabled <?php } ?>><i class="fa fa-print"></i> Imprimir</button></a>
+                      <?php }else{ ?>
+                        <a target="_blank" href="FacturaDevolucionController.php?noFactura=<?php echo $item["idVenta"]; ?>"><button id="imprimir" type="button" class="btn btn-round btn-primary" onclick="setImpresoPagado('<?php echo $item["idVenta"]; ?>')" <?php if($item['impresoPagado'] == 1 || $item['impresoPagado'] == 2) {?> disabled <?php } ?>><i class="fa fa-print"></i> Imprimir</button></a>
+                      <?php } ?>  
                      </td>
+                     <td class="ocultar"><?php  echo $item['vieneDeDevolucion'] ? 'SI' : "NO"; ?></td>
 
                    </tr> 
                   <?php endforeach; ?>
@@ -291,6 +303,17 @@
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
     <script>
+        /*$(document).ready(function(){
+            var contadorClick = 0;
+
+            $("#imprimir").click(function(){
+                contadorClick++;
+                //console.log("Numero de clicks: "+contadorClick);
+                $("#imprimir").attr('disabled',true);
+            });
+        }); */
+    </script>
+    <script>
 //funcion para cargar datos en el modal de editar
         function CargarDatos(id,nombre,nit,telefono,direccion,idMunicipio)
         {
@@ -325,14 +348,6 @@
             //alert(resp);
           });
         }
-    </script>
-
-    <script>
-       $(document).ready(function(){
-            $('#imprimir').click(function(){
-
-            });
-       });
     </script>
   </body>
 </html>

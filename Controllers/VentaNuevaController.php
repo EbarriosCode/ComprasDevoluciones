@@ -10,9 +10,10 @@
 		$idCliente = $_POST['idCliente'];
 		$idProducto = $_POST['idProducto'];
 		$cantidad = $_POST['cantidadProducto'];
+		$vieneDeDevolucion = false;
 		
 
-		$insertado = $inst->insertVentas($fechaHoy,$idCliente,$idProducto,$cantidad);
+		$insertado = $inst->insertVentas($fechaHoy,$idCliente,$idProducto,$cantidad,$vieneDeDevolucion);
 		if($insertado){
 			echo "<script>alert('Registro Guardado Correctamente');";
 			echo "window.location.href='VentasController.php'</script>";

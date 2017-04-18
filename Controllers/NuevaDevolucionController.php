@@ -4,7 +4,7 @@
 	$obj = new Ventas();
 
 	// inclusion de archivo model devoluciones
-	require_once('../Models/NuevaDevolucionModel.php');
+	require_once('../Models/DevolucionesModel.php');
 	$inst = new Devoluciones();
 
 	if(isset($_POST['devolver-producto']))
@@ -20,18 +20,19 @@
 		$fecha = DATE('Y-m-d');
 		$idProductoNuevo = $_POST['idProductoNuevo'];
 		$cantidadProductoNuevo = $_POST['cantidadProductoNuevo'];
+		$vieneDeDevolucion = true;
 		// FIN datos para generar la nueva venta y factura
 		$devolvido = $inst->DevolverProducto($documento,$idProducto,$cantidadProducto,$idCliente);
 		//var_dump($devolvido);
-		$nuevaVentaFactura = $obj->insertVentas($fecha,$idCliente,$idProductoNuevo,$cantidadProductoNuevo);
+		$nuevaVentaFactura = $obj->insertVentas($fecha,$idCliente,$idProductoNuevo,$cantidadProductoNuevo,$vieneDeDevolucion);
 
 		if($devolvido && $nuevaVentaFactura){
 			echo "<script>alert('Devolución Registrada Correctamente');";
-			echo "window.location.href='NuevaDevolucionController.php'</script>";
+			echo "window.location.href='DevolucionesController.php'</script>";
 		}
 		else{
 			echo "<script>alert('No se guardo el registro');";
-			echo "window.location.href='NuevaDevolucionController.php'</script>";
+			echo "window.location.href='DevolucionesController.php'</script>";
 		}
 	}
 

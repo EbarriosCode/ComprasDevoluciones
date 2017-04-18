@@ -53,6 +53,31 @@
         text-align: center;
         margin-left: 25%;
       }
+
+      .campo:invalid{
+        border: 1px solid red;  
+      }
+
+      .campo:valid{
+        border: 1px solid green;    
+      }
+
+
+      .campo:invalid + span::after {
+        content : url('images/fail.png');
+        padding: 5px;
+        border-radius: 5px;
+        color: red;
+        font-weight : bold;
+      }
+
+      .campo:valid + span::after {
+        content : url('images/check.png');
+        padding: 5px;
+        border-radius: 5px;
+        color: red;
+        font-weight : bold;
+      }
     </style>
   </head>
 
@@ -173,7 +198,8 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="documento">No. Documento-Factura <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="documento" name="documento" required="required" class="form-control col-md-7 col-xs-12" onchange="ajax(this.value)" placeholder="Ingrese el número de su factura" autofocus onkeypress="return validateInput(event)" onpaste="return false">
+                          <input type="text" id="documento" name="documento" required="required" class="form-control col-md-7 col-xs-12"  onblur="this.className ='form-control campo';" onchange="ajax(this.value)" placeholder="Ingrese el número de su factura" autofocus 
+                          onkeypress="return validateInput(event)" onpaste="return false"><span></span>
                         </div>
                       </div>
                       <div class="form-group text-center" id="hintFactura">
@@ -296,6 +322,7 @@
     <script src="../build/js/custom.min.js"></script>
     <script>
         $(document).ready(function(){
+
           $("#alerta").hide();      
           // alerta por si lo despachado es mayor que la existencia en formulario de nuevo desactivada
           $("#cantidadProductoNuevo").blur(function(){
@@ -317,18 +344,28 @@
           });      
         });
     </script>
+   
     <script>
         function ajax(str)
         {
-          var entero = parseInt(str);
-          
-            $.ajax
-            ({
-                  type: 'GET',
-                  url: 'ValidaDocumento.php?NoDocumento='+entero                  
-            }).done(function(data){
-              $('#hintFactura').html(data);
-          });
+          if(str == "")
+          {
+              /*$("#documento").css('border','2px solid red');
+              $("#documento").css('color','#FF0040');
+              $("#documento").val('Ha dejado vacío este campo');
+              $("#documento").animate({letterSpacing:"8px"},3000);*/
+          }
+          else{
+            var entero = parseInt(str);
+            
+              $.ajax
+              ({
+                    type: 'GET',
+                    url: 'ValidaDocumento.php?NoDocumento='+entero                  
+              }).done(function(data){
+                $('#hintFactura').html(data);
+            });
+          }  
         }
     </script>
     <script>
