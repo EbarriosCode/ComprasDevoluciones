@@ -34,6 +34,13 @@
         text-align: center;
         margin-left: 25%;
       }
+      #alerta-existencia-menor
+      {
+        display: none;
+        margin-top: 10px;
+        text-align: center;
+        margin-left: 25%;
+      }
     </style>
   </head>
 
@@ -154,43 +161,41 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="documento">No. Documento-Factura <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="documento" name="documento" required="required" class="form-control col-md-7 col-xs-12" onchange="ajax(this.value)" placeholder="Ingrese el número de su factura">
+                          <input type="text" id="documento" name="documento" required="required" class="form-control col-md-7 col-xs-12" onchange="ajax(this.value)" placeholder="Ingrese el número de su factura" autofocus>
                         </div>
                       </div>
                       <div class="form-group text-center" id="hintFactura">
                         
                       </div>
+                      
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="idCliente">Nombre Cliente <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12" id="txtHint">
-                          <input type="text" id="idCliente" name="idCliente" required="required" disabled placeholder="El nombre aparecerá cuando ingrese el nit" class="form-control col-md-7 col-xs-12">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="codigoProducto">Código Producto <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="codigoProductoNuevo">Código Producto <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="codigoProducto" name="codigoProducto" required="required" class="form-control col-md-7 col-xs-12" onchange="ajaxProducto(this.value)">
+                          <input type="text" id="codigoProductoNuevo" name="codigoProductoNuevo" required="required" class="form-control col-md-7 col-xs-12" onchange="ajaxProductoVender(this.value)">
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="producto">Producto <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="idProductoNuevo">Producto <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12" id="txtHintProducto">
-                          <input type="text" id="idProducto" name="idProducto" placeholder="El nombre del producto aparecerá cuando ingrese el código" required="required" class="form-control col-md-7 col-xs-12" disabled>
+                        <div class="col-md-6 col-sm-6 col-xs-12" id="hintProductoVender">
+                          <input type="text" id="idProductoNuevo" name="idProductoNuevo" placeholder="El nombre del producto aparecerá cuando ingrese el código" required="required" class="form-control col-md-7 col-xs-12" disabled>
                         </div>
                       </div>                      
                       <div class="form-group">
-                        <label for="cantidadProducto" class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad <span class="required">*</span></label>
+                        <label for="cantidadProductoNuevo" class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="cantidadProducto" class="form-control col-md-7 col-xs-12" type="number" name="cantidadProducto">
+                          <input id="cantidadProductoNuevo" class="form-control col-md-7 col-xs-12" type="number" name="cantidadProductoNuevo">
                         </div>
                         <br>
                         
                         <div id="alerta" class="alert alert-danger col-md-6" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                  <strong>Error :</strong> Los elementos del formulario se han desabilitado 
+                                  <strong>Error :</strong> Los elementos del formulario se han desabilitado debido a que el número de documento-factura no existe. Porfavor revise y vuelva a intentarlo 
+                        </div>
+                        <div id="alerta-existencia-menor" class="alert alert-danger col-md-6" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <strong>Error :</strong> Esta queriendo enviar más productos de los que hay en existencia. El botón para realizar la venta se ha bloqueado hasta que corrija el error.
                         </div>
                         
                       </div> 
@@ -270,6 +275,29 @@
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
     <script>
+        $(document).ready(function(){
+          $("#alerta").hide();      
+          // alerta por si lo despachado es mayor que la existencia en formulario de nuevo desactivada
+          $("#cantidadProducto").blur(function(){
+            var cantidadInput = parseInt($("#cantidadProducto").val());
+            var existencia = parseInt($("#existenciaDB").val());
+            //alert("Cantidad en el input: "+cantidadInput +" existencia: "+existencia);
+            if(cantidadInput > existencia)
+            {
+              $("#alerta-existencia-menor").show();
+              $('#crear').attr("disabled", true);
+              return false;
+            }
+            if(!(cantidadInput > existencia))
+            {
+              $("#alerta-existencia-menor").hide();
+              $('#devolver-producto').attr("disabled", false);
+              return false;
+            } 
+          });      
+        });
+    </script>
+    <script>
         function ajax(str)
         {
           var entero = parseInt(str);
@@ -280,6 +308,18 @@
                   url: 'ValidaDocumento.php?NoDocumento='+entero                  
             }).done(function(data){
               $('#hintFactura').html(data);
+          });
+        }
+    </script>
+    <script>
+        function ajaxProductoVender(codigoProductoVender)
+        {       
+            $.ajax
+            ({
+                  type: 'GET',
+                  url: 'RecuperarProductoController.php?codigoProductoVender='+codigoProductoVender
+            }).done(function(data){
+              $('#hintProductoVender').html(data);
           });
         }
     </script>

@@ -147,7 +147,11 @@
                   </tr>
 
                   <?php foreach($Ventas as $item): ?>
-                   <tr <?php if($item['impresoPagado'] == 1) echo 'class=success'; ?>>
+                   <tr <?php if($item['impresoPagado'] == 1) 
+                                  echo 'class=success'; 
+                             if($item['impresoPagado'] == 2) 
+                                  echo 'class=warning'; 
+                        ?>>
                      <td><?php echo $item['fecha']; ?></td>
                      <td><?php echo $item['idVenta']; ?></td>
                      <td><?php echo $item['nombreCliente']; ?></td>
@@ -155,7 +159,7 @@
                      <td><?php echo $item['precio']; ?></td>
                      <td><?php echo $item['cantidad']; ?></td>
                      <td><?php echo $item['costoTotal']; ?></td>                     
-                     <td class="text-center"><a target="_blank" href="FacturasController.php?noFactura=<?php echo $item["idVenta"]; ?>"><button id="imprimir" type="button" class="btn btn-round btn-primary" onclick="setImpresoPagado('<?php echo $item["idVenta"]; ?>')"><i class="fa fa-print"></i> Imprimir</button></a>
+                     <td class="text-center"><a target="_blank" href="FacturasController.php?noFactura=<?php echo $item["idVenta"]; ?>" <?php if($item['impresoPagado'] != 0) echo 'disabled'; ?>><button id="imprimir" type="button" class="btn btn-round btn-primary" onclick="setImpresoPagado('<?php echo $item["idVenta"]; ?>')"><i class="fa fa-print"></i> Imprimir</button></a>
                      </td>
 
                    </tr> 
