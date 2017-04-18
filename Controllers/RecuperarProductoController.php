@@ -32,7 +32,7 @@
 		$Producto = $inst->getProductoAjax($codigoProducto);
 
 		if($Producto){
-			echo "<select id='idProducto' name='idProducto' class='form-control' required>";
+			echo "<select id='idProductoNuevo' name='idProductoNuevo' class='form-control' required>";
 			foreach($Producto as $item){	
 					echo "<option value='$item[idProducto]'>".$item['nombreProducto']." Marca ".$item['nombreMarca']." Precio Unitario Q.".$item['precio']."</option>";				
 			}

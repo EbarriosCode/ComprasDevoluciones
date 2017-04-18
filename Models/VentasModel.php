@@ -102,5 +102,5 @@
 	}
 	
 	/*$r = new Ventas();
-	var_dump($r->getVentas(0,5,'2017-04-15','2017-04-16'));*/
+	echo count($r->getVentas('2017-04-15','2017-04-15')); */
  ?>
