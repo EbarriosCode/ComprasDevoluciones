@@ -12,8 +12,8 @@
 			text-align: center;
 		}
 
-		.titul{
-			margin-top: 25px;
+		.titulo{
+			margin-top: 0px;
 		}
 
 		.izquierda{						
@@ -48,7 +48,7 @@
 		tr:nth-child(even){background-color: #f2f2f2}
 
 		.nota-credito-devolucion{
-			margin-top: 15px;
+			margin-top: 0px;
 		}
 
 		.th-nota-credito{
@@ -112,25 +112,25 @@
 	<div class="nota-credito-devolucion">
 		<h6 >NOTA DE CREDITO <br>Serie A12</h6>
 		<div class="container">
-			<?php if(strlen($NoDocumento) == 1){ ?>
-			<h2 class="titulo">Nota de crédito No. 000<?php echo $NoDocumento; ?></h2>
+			<?php foreach($NotaCredito as $datosCredito): ?>
+			<?php if(strlen($datosCredito['idNotaCredito']) == 1){ ?>
+			<h2 class="titulo">Nota de crédito No. 000<?php echo $datosCredito['idNotaCredito']; ?></h2>
 			<?php } ?>
 
-			<?php if(strlen($NoDocumento) == 2){ ?>
-			<h2 class="titulo">Nota de crédito No. 00<?php echo $NoDocumento; ?></h2>
+			<?php if(strlen($datosCredito['idNotaCredito']) == 2){ ?>
+			<h2 class="titulo">Nota de crédito No. 00<?php echo $datosCredito['idNotaCredito']; ?></h2>
 			<?php } ?>
 
-			<?php if(strlen($NoDocumento) == 3){ ?>
-			<h2 class="titulo">Nota de crédito No. 0<?php echo $NoDocumento; ?></h2>
+			<?php if(strlen($datosCredito['idNotaCredito']) == 3){ ?>
+			<h2 class="titulo">Nota de crédito No. 0<?php echo $datosCredito['idNotaCredito']; ?></h2>
 			<?php } ?>
 
-			<?php if(strlen($NoDocumento) == 4){ ?>
-			<h2 class="tiulo">Nota de crédito No. <?php echo $NoDocumento; ?></h2>
+			<?php if(strlen($datosCredito['idNotaCredito']) == 4){ ?>
+			<h2 class="tiulo">Nota de crédito No. <?php echo $datosCredito['idNotaCredito']; ?></h2>
 			<?php } ?>
 	</div>
-		<hr>
 	<div class="izquierda">
-		<?php foreach($Factura as $item): ?>
+		
 			
 				<h5>Fecha: <?php echo $item['fecha']; ?></h5>
 				<h5>Cliente: <?php echo $item['nombreCliente']; ?></h5>
@@ -148,16 +148,16 @@
 				<th class="th-nota-credito">Precio Total</th>
 			</tr>
 			<tr>
-				<td><?php echo $item['codigoProducto']; ?></td>
-				<td><?php echo $item['nombreMarca']." ".$item['descripcion']; ?></td>
-				<td><?php echo $item['cantidad']; ?></td>
-				<td><?php echo $item['precio']; ?></td>
-				<td><?php echo $item['costoTotal']; ?></td>
+				<td><?php echo $datosCredito['codigoProducto']; ?></td>
+				<td><?php echo $datosCredito['nombreMarca']." ".$datosCredito['descripcion']; ?></td>
+				<td><?php echo $datosCredito['cantidad']; ?></td>
+				<td><?php echo $datosCredito['precio']; ?></td>
+				<td><?php echo $datosCredito['costoTotal']; ?></td>
 			</tr>
 		</table>		
 		<h6 class="derecha">Sujeto a pagos trimestrales</h6>
 		</div>
-	<hr>
+	
 	</div>
 </body>
 </html>

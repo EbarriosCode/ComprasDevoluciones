@@ -195,10 +195,10 @@
                     <br />
                     <form id="demo-form2" method="post" data-parsley-validate class="form-horizontal form-label-left">
                       <div class="form-group">                        
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="documento">No. Documento-Factura <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="documento-devolver">No. documento-devolver-Factura <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="documento" name="documento" required="required" class="form-control col-md-7 col-xs-12"  onblur="this.className ='form-control campo';" onchange="ajax(this.value)" placeholder="Ingrese el número de su factura" autofocus 
+                          <input type="text" id="documento-devolver" name="documento-devolver" required="required" class="form-control col-md-7 col-xs-12"  onblur="this.className ='form-control campo';" onchange="ajax(this.value)" placeholder="Ingrese el número de su factura" autofocus 
                           onkeypress="return validateInput(event)" onpaste="return false"><span></span>
                         </div>
                       </div>

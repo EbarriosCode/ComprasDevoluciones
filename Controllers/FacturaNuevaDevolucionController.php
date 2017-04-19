@@ -6,7 +6,7 @@
 	require_once('../Models/FacturaNuevaDevolucionModel.php');
 	$inst = new Facturas();
 	$Factura = $inst->getVenta($NoDocumento);
-
+	$NotaCredito = $inst->getNotaCredito($NoDocumento);
 	// incluir la vista que es lo que se vera en el pdf con datos de la factura	
 	require_once('../Views/FacturaNuevaDevolucionView.php');
 

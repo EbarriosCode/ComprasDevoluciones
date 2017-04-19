@@ -10,7 +10,7 @@
 	if(isset($_POST['devolver-producto']))
 	{
 		// datos para transaccion de devolucion
-		$documento = $_POST['documento'];
+		$documento = $_POST['documento-devolver'];
 		$idProducto = $_POST['idProductoDevolver'];
 		$cantidadProducto = $_POST['cantidadProducto'];
 		$idCliente = $_POST['idCliente'];
@@ -26,7 +26,10 @@
 		//var_dump($devolvido);
 		$nuevaVentaFactura = $obj->insertVentas($fecha,$idCliente,$idProductoNuevo,$cantidadProductoNuevo,$vieneDeDevolucion);
 
-		if($devolvido && $nuevaVentaFactura){
+		// generar la nota de credito con el no documento a devolver
+		$notaCredito = $inst->generarNotaCredito($documento);
+
+		if($devolvido && $nuevaVentaFactura && $notaCredito){
 			echo "<script>alert('Devolución Registrada Correctamente');";
 			echo "window.location.href='DevolucionesController.php'</script>";
 		}

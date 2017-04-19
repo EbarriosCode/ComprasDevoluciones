@@ -79,8 +79,22 @@
 			return $resultado->fetchAll();			 
 		}
 
+		public function generarNotaCredito($documentoDevolver)
+		{
+			$sql = "call sp_GenerarNotaCredito($documentoDevolver);";
+			$resultado = Conexion::Conectar()->prepare($sql);
+			if($resultado->execute())
+				return true;
+
+			else
+				return false;
+
+			$resultado->close();
+		}		
+
 	}
 
 	/*$r = new Devoluciones;
 	var_dump($r->getDevoluciones('2017-04-18','2017-04-18')); */
+
  ?>
