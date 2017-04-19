@@ -119,3 +119,31 @@ CALL sp_TransaccionDevoluciones(curdate(),1,1,1,1);
 
 truncate table devoluciones;
 truncate table devolucionesdetalle;
+
+-- procedimiento con transaccion para generar nota de credito
+
+DELIMITER $$
+CREATE PROCEDURE sp_GenerarNotaCredito
+(IN documentoDevolver INT)
+BEGIN
+	 DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	 BEGIN
+	 SHOW ERRORS LIMIT 1;
+	 ROLLBACK;
+	 END; 
+	 
+     DECLARE EXIT HANDLER FOR SQLWARNING
+	 BEGIN
+	 SHOW WARNINGS LIMIT 1;
+	 ROLLBACK;
+	 END;
+START TRANSACTION;    
+		SELECT @idVentaGeneroNotaCredito := MAX(idVenta) FROM ventas;
+        /* insertar en la tabla notas de credito */
+		INSERT INTO notasdecredito (idVenta,fechaNotaCredito,idVentaGeneroEsta) 
+        VALUES(documentoDevolver,curdate(),@idVentaGeneroNotaCredito);
+	COMMIT; 
+END $$		
+
+call sp_GenerarNotaCredito(28);
+drop procedure sp_GenerarNotaCredito;
