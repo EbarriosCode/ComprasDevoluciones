@@ -24,7 +24,7 @@ DELIMITER $$
 --
 -- Procedimientos
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `debug` (IN `existencia` INT, IN `idPro` INT)  BEGIN
+CREATE PROCEDURE `debug` (IN `existencia` INT, IN `idPro` INT)  BEGIN
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION
  BEGIN
@@ -44,7 +44,7 @@ START TRANSACTION;
 COMMIT;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_existeVenta_diferenciaFechas` (IN `documento` INT(11), IN `fechaHoy` DATE, OUT `diferenciaDias` INT(11))  BEGIN
+CREATE PROCEDURE `sp_existeVenta_diferenciaFechas` (IN `documento` INT(11), IN `fechaHoy` DATE, OUT `diferenciaDias` INT(11))  BEGIN
 	
     SET @fechaVenta := (SELECT VF.fecha FROM ventas VF WHERE VF.idVenta=documento);
 	SET diferenciaDias := DATEDIFF(fechaHoy,@fechaVenta); 
@@ -61,7 +61,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_existeVenta_diferenciaFechas` (I
 	WHERE V.idVenta=documento;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_TransaccionDevoluciones` (IN `Fecha` DATE, IN `Documento` INT, IN `IdProducto` INT, IN `Cantidad` INT, IN `IdCliente` INT)  BEGIN
+CREATE PROCEDURE `sp_TransaccionDevoluciones` (IN `Fecha` DATE, IN `Documento` INT, IN `IdProducto` INT, IN `Cantidad` INT, IN `IdCliente` INT)  BEGIN
 	 DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	 BEGIN
 	 SHOW ERRORS LIMIT 1;
@@ -100,7 +100,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_TransaccionDevoluciones` (IN `Fe
     COMMIT; 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_TransaccionVentas` (IN `Fecha` DATE, IN `IdCliente` INT, IN `IdProducto` INT, IN `Cantidad` INT, IN `deDevolucion` BOOLEAN)  BEGIN
+CREATE PROCEDURE `sp_TransaccionVentas` (IN `Fecha` DATE, IN `IdCliente` INT, IN `IdProducto` INT, IN `Cantidad` INT, IN `deDevolucion` BOOLEAN)  BEGIN
 	 DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	 BEGIN
 	 SHOW ERRORS LIMIT 1;

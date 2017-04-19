@@ -241,7 +241,7 @@
                         </div>
                         <div id="alerta-exceso-dias" class="alert alert-warning col-md-6" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                  <strong>Error :</strong> No se puede realizar la venta porque han pasado mas de 2 días.
+                                  <strong>Error :</strong> No se puede realizar la devolución porque han pasado mas de 2 días.
                         </div>
                         
                       </div> 
