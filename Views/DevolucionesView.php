@@ -127,11 +127,14 @@
   <div class="right_col" role="main">
       <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="text-left col-md-3"><a href="NuevaDevolucionController.php" class="btn btn-round btn-info"><i class="fa fa-plus"></i> Registrar Nueva Devoluciones</a></div>
-            
+            <div class="text-left col-md-3"><a href="NuevaDevolucionController.php" class="btn btn-round btn-info"><i class="fa fa-plus"></i> Devolucion Producto * Producto</a></div>            
             <div class="text-right col-md-9"><button data-toggle='modal' data-target='#modal-fecha' class="btn btn-round btn-warning"><i class="fa fa-calendar"></i> Cambiar Fecha</button></div>
-            <br> 
+            <div class="text-center col-md-3"><a href="NuevaDevolucionDineroController.php" class="btn btn-round btn-success"><i class="fa fa-plus"></i> Devolucion Efectivo * Producto</a></div>
+            <br><br><br><br>
               <h3 class="text-center">Devoluciones del Día</h3>
+              <a href="VentasController.php">
+                <h5 class="text-center"><button>Ir a Ventas | Visualizar Facturas Generadas por devoluciones</button></h5>
+              </a>
 
               <br>          
                 <table class="table table-hover">
@@ -165,7 +168,7 @@
                    </tr> 
                   <?php endforeach; ?>
                 </table>
-
+  
                 <!--<div class="text-center">
                       <nav aria-label="Page navigation">
                             <ul class="pagination">        
