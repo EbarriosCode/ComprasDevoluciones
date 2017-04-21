@@ -71,7 +71,7 @@ END $$
 DROP PROCEDURE sp_existeVenta_diferenciaFechas;
 CALL sp_existeVenta_diferenciaFechas(4,curdate(),@diferencia);
 
--- procedimiento almacenado con transaccion para realizar una devolucion
+-- procedimiento almacenado con transaccion para realizar una devolucion 
 DELIMITER $$
 CREATE PROCEDURE sp_TransaccionDevoluciones
 (IN Fecha date,IN Documento int,IN IdProducto int,IN Cantidad int,IN IdCliente int)
