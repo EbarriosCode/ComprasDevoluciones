@@ -14,7 +14,10 @@
 		echo "</select>";
 	}
 	else{
-		echo "<label class='label label-danger'>No existe ningún Cliente con ese nit</label>";
+		echo "<label class='label label-danger'>No existe ningún Cliente con ese nit, ingrese un NIT válido para activar los elementos que desaparecieron</label>";
+		echo "<style>";						
+					echo "#crear{ display: none; }";	
+			echo "</style>";
 	}
 
  ?>

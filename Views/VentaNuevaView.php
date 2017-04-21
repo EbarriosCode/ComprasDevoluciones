@@ -154,7 +154,8 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nit">Nit Cliente <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="nit" name="nit" required="required" class="form-control col-md-7 col-xs-12" onchange="ajax(this.value)" placeholder="SIN GUIONES" onkeypress="return validateInput(event)" onpaste="return false">
+                          <input type="text" id="nit" name="nit" required="required" class="form-control col-md-7 col-xs-12" onchange="ajax(this.value)" placeholder="SIN GUIONES" onkeypress="return validateInput(event)" 
+                           autofocus onpaste="return false">
                         </div>
                       </div>
                       <div class="form-group">
@@ -181,7 +182,7 @@
                       <div class="form-group">
                         <label for="cantidadProducto" class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="cantidadProducto" class="form-control col-md-7 col-xs-12" type="number" name="cantidadProducto">
+                          <input id="cantidadProducto" class="form-control col-md-7 col-xs-12" type="number" name="cantidadProducto" required>
                         </div>
                         <br>
                         

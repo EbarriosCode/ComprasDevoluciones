@@ -54,6 +54,13 @@
         margin-left: 25%;
       }
 
+      #alerta-productos-iguales{
+        display: none;
+        margin-top: 10px;
+        text-align: center;
+        margin-left: 25%;
+      }
+
       .campo:invalid{
         border: 1px solid red;  
       }
@@ -199,7 +206,7 @@
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input type="text" id="documento-devolver" name="documento-devolver" required="required" class="form-control col-md-7 col-xs-12"  onblur="this.className ='form-control campo';" onchange="ajax(this.value)" placeholder="Ingrese el número de su factura" autofocus 
-                          onkeypress="return validateInput(event)" onpaste="return false"><span></span>
+                          onkeypress="return validateInput(event)" onpaste="return false">
                         </div>
                       </div>
                       <div class="form-group text-center" id="hintFactura">
@@ -217,13 +224,13 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="idProductoNuevo">Producto <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12" id="hintProductoVender">
-                          <input type="text" id="idProductoNuevo" name="idProductoNuevo" placeholder="El nombre del producto aparecerá cuando ingrese el código" required="required" class="form-control col-md-7 col-xs-12" disabled>
+                          <input type="text" id="idProductoNuevo" name="idProductoNuevo" placeholder="El nombre del producto aparecerá cuando ingrese el código" required class="form-control col-md-7 col-xs-12" disabled>
                         </div>
                       </div>                      
                       <div class="form-group">
                         <label for="cantidadProductoNuevo" class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input id="cantidadProductoNuevo" class="form-control col-md-7 col-xs-12" type="number" name="cantidadProductoNuevo">
+                          <input id="cantidadProductoNuevo" class="form-control col-md-7 col-xs-12" type="number" name="cantidadProductoNuevo" required>
                         </div>
                         <br>
                         
@@ -242,6 +249,10 @@
                         <div id="alerta-exceso-dias" class="alert alert-warning col-md-6" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                   <strong>Error :</strong> No se puede realizar la devolución porque han pasado mas de 2 días.
+                        </div>
+                        <div id="alerta-productos-iguales" class="alert alert-warning col-md-6" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <strong>Error :</strong> Está queriendo comprar el mismo producto que va a devolver.
                         </div>
                         
                       </div> 
@@ -341,7 +352,10 @@
               $('#devolver').attr("disabled", false);
               return false;
             } 
-          });      
+          });   
+
+
+           
         });
     </script>
    
@@ -378,6 +392,22 @@
             }).done(function(data){
               $('#hintProductoVender').html(data);
           });
+
+         //$("#codigoProductoNuevo").blur(function(){
+              var idProductoFactura = parseInt($('#idProductoDevolver').val());
+              var idProductoNuevo = parseInt($('#idProductoNuevo').val());
+
+              //alert('id producto factura: '+idProductoFactura+' id producto nuevo: '+idProductoNuevo);
+              if(idProductoFactura == idProductoNuevo)
+              {
+                  $('#alerta-productos-iguales').show();
+                  //$('#alerta').hide();
+              }
+              else{
+                $('#alerta-productos-iguales').hide();
+              }
+          // });
+
         }
     </script>
     <script type="text/javascript">

@@ -68,7 +68,7 @@
 
 		public function getProductoAjax($codigo)
 		{
-			$sql = "SELECT P.idProducto,P.nombreProducto,P.idMarca,P.precio,P.existencia,M.idMarca,M.nombreMarca
+			$sql = "SELECT P.idProducto,P.codigoProducto,P.nombreProducto,P.idMarca,P.precio,P.existencia,M.idMarca,M.nombreMarca
 				    FROM productos P
 					INNER JOIN marcaproductos M ON P.idMarca = M.idMarca
 				    WHERE codigoProducto='$codigo'";
