@@ -47,6 +47,14 @@
 			$stmt->close();
 		}
 
+		public function getUltimaVenta()
+		{
+			$sql = "SELECT max(idVenta) FROM ventas";
+			$resultado = Conexion::Conectar()->prepare($sql);
+			$resultado->execute();
+			return $resultado->fetchAll();			 
+		}
+
 		public function numRegistros()
 		{
 			$sql = "SELECT idVenta FROM ventas";
@@ -102,5 +110,5 @@
 	}
 	
 	/*$r = new Ventas();
-	echo count($r->getVentas('2017-04-15','2017-04-15')); */
+	var_dump($r->getUltimaVenta());*/
  ?>

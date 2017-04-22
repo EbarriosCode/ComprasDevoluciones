@@ -15,8 +15,12 @@
 
 		$insertado = $inst->insertVentas($fechaHoy,$idCliente,$idProducto,$cantidad,$vieneDeDevolucion);
 		if($insertado){
-			echo "<script>alert('Registro Guardado Correctamente');";
-			echo "window.location.href='VentasController.php'</script>";
+			foreach($inst->getUltimaVenta() as $idVenta)
+			{
+				//echo $idVenta['max(idVenta)'];
+				echo "<script>alert('Registro Guardado Correctamente');</script>";
+				echo "<script>window.open('FacturasController.php?noFactura=".$idVenta['max(idVenta)']."','_blank');</script>";
+			}
 		}
 		else{
 			echo "<script>alert('No se guardo el registro');";
