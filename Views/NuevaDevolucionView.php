@@ -352,7 +352,28 @@
               $('#devolver').attr("disabled", false);
               return false;
             } 
-          });   
+          }); 
+
+      // desactivar boton de imprimir facturas
+      $('#imprimir').click(function(){
+          $('#imprimir').attr('disabled',true);
+      });
+
+      // validación de no vender producto igual en una devolucion
+      $("#cantidadProductoNuevo").blur(function(){
+              var idProductoFactura = parseInt($('#idProductoDevolver').val());
+              var idProductoNuevo = parseInt($('#idProductoNuevo').val());
+
+              //alert('id producto factura: '+idProductoFactura+' id producto nuevo: '+idProductoNuevo);
+              if(idProductoFactura == idProductoNuevo)
+              {
+                  $('#alerta-productos-iguales').show();
+                  //$('#alerta').hide();
+              }
+              else{
+                $('#alerta-productos-iguales').hide();
+              }
+           });
 
 
            
@@ -391,23 +412,7 @@
                   url: 'RecuperarProductoController.php?codigoProductoVender='+codigoProductoVender
             }).done(function(data){
               $('#hintProductoVender').html(data);
-          });
-
-         //$("#codigoProductoNuevo").blur(function(){
-              var idProductoFactura = parseInt($('#idProductoDevolver').val());
-              var idProductoNuevo = parseInt($('#idProductoNuevo').val());
-
-              //alert('id producto factura: '+idProductoFactura+' id producto nuevo: '+idProductoNuevo);
-              if(idProductoFactura == idProductoNuevo)
-              {
-                  $('#alerta-productos-iguales').show();
-                  //$('#alerta').hide();
-              }
-              else{
-                $('#alerta-productos-iguales').hide();
-              }
-          // });
-
+          });         
         }
     </script>
     <script type="text/javascript">

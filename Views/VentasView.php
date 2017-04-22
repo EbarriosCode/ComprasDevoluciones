@@ -303,15 +303,19 @@
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
     <script>
-        /*$(document).ready(function(){
-            var contadorClick = 0;
+        $(document).ready(function(){
+            /*var contadorClick = 0;
 
             $("#imprimir").click(function(){
                 contadorClick++;
                 //console.log("Numero de clicks: "+contadorClick);
                 $("#imprimir").attr('disabled',true);
-            });
-        }); */
+            });*/
+             // desactivar boton de imprimir facturas
+      $('#imprimir').click(function(){
+          $('#imprimir').attr('disabled',true);
+      });
+        }); 
     </script>
     <script>
 //funcion para cargar datos en el modal de editar
