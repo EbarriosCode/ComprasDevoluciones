@@ -146,7 +146,7 @@
                 <div class="tile-stats">
                   <div class="icon"><i class="fa fa-sort-amount-desc"></i></div>
                   <div class="count"><?php echo count($inst->cantidadProductos()); ?></div>
-                  <h3>New Sign ups</h3>
+                  <h3>Tipos de Productos</h3>
                   <p>Lorem ipsum psdea itgum rixt.</p>
                 </div>
               </div>
@@ -154,7 +154,7 @@
                 <div class="tile-stats">
                   <div class="icon"><i class="fa fa-check-square-o"></i></div>
                   <div class="count"><?php echo count($inst->cantidadClientes()); ?></div>
-                  <h3>New Sign ups</h3>
+                  <h3>Clientes Registrados</h3>
                   <p>Lorem ipsum psdea itgum rixt.</p>
                 </div>
               </div>
@@ -180,21 +180,21 @@
                       </div>
                       <div class="tiles">
                         <div class="col-md-4 tile">
-                          <span>Total Sessions</span>
+                          <span>Total Sesiones</span>
                           <h2>231,809</h2>
                           <span class="sparkline11 graph" style="height: 160px;">
                                <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                           </span>
                         </div>
                         <div class="col-md-4 tile">
-                          <span>Total Revenue</span>
+                          <span>Total Transacciones</span>
                           <h2>$231,809</h2>
                           <span class="sparkline22 graph" style="height: 160px;">
                                 <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                           </span>
                         </div>
                         <div class="col-md-4 tile">
-                          <span>Total Sessions</span>
+                          <span>Total Efectivo</span>
                           <h2>231,809</h2>
                           <span class="sparkline11 graph" style="height: 160px;">
                                  <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
@@ -207,19 +207,10 @@
                     <div class="col-md-3 col-sm-12 col-xs-12">
                       <div>
                         <div class="x_title">
-                          <h2>Top Profiles</h2>
+                          <h2>Top Clientes</h2>
                           <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                            <li class="dropdown">
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                              <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Settings 1</a>
-                                </li>
-                                <li><a href="#">Settings 2</a>
-                                </li>
-                              </ul>
-                            </li>
+                            </li>                           
                             <li><a class="close-link"><i class="fa fa-close"></i></a>
                             </li>
                           </ul>
@@ -231,10 +222,9 @@
                               <i class="fa fa-user aero"></i>
                             </a>
                             <div class="media-body">
-                              <a class="title" href="#">Ms. Mary Jane</a>
-                              <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                              <p> <small>12 Sales Today</small>
-                              </p>
+                              <a class="title" href="#">Eduardo Barrios</a>
+                              <p><strong>Q.2300. <br></strong> Flores Petén </p>
+                              
                             </div>
                           </li>
                           <li class="media event">
@@ -242,10 +232,8 @@
                               <i class="fa fa-user green"></i>
                             </a>
                             <div class="media-body">
-                              <a class="title" href="#">Ms. Mary Jane</a>
-                              <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                              <p> <small>12 Sales Today</small>
-                              </p>
+                              <a class="title" href="#">Mario Castillo</a>
+                              <p><strong>Q.2300. </strong> La libertad Petén </p>                              
                             </div>
                           </li>
                           <li class="media event">
@@ -253,21 +241,16 @@
                               <i class="fa fa-user blue"></i>
                             </a>
                             <div class="media-body">
-                              <a class="title" href="#">Ms. Mary Jane</a>
-                              <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                              <p> <small>12 Sales Today</small>
-                              </p>
-                            </div>
+                              <a class="title" href="#">Jorge Mendizabal</a>
+                              <p><strong>Q.2300. </strong> Dolores Petén </p>                              
                           </li>
                           <li class="media event">
                             <a class="pull-left border-aero profile_thumb">
                               <i class="fa fa-user aero"></i>
                             </a>
                             <div class="media-body">
-                              <a class="title" href="#">Ms. Mary Jane</a>
-                              <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                              <p> <small>12 Sales Today</small>
-                              </p>
+                              <a class="title" href="#">Elmer del Cid</a>
+                              <p><strong>Q.2300. </strong> Chiantla Huehuetenango </p>                              
                             </div>
                           </li>
                           <li class="media event">
@@ -275,11 +258,9 @@
                               <i class="fa fa-user green"></i>
                             </a>
                             <div class="media-body">
-                              <a class="title" href="#">Ms. Mary Jane</a>
-                              <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                              <p> <small>12 Sales Today</small>
-                              </p>
-                            </div>
+                              <a class="title" href="#">Carlos Herrera</a>
+                              <p><strong>Q.2300. </strong> Chiantla Huehuetenango </p>                              
+                              </div>
                           </li>
                         </ul>
                       </div>
