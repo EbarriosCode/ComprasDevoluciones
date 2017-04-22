@@ -352,12 +352,7 @@
               $('#devolver').attr("disabled", false);
               return false;
             } 
-          }); 
-
-      // desactivar boton de imprimir facturas
-      $('#imprimir').click(function(){
-          $('#imprimir').attr('disabled',true);
-      });
+          });      
 
       // validación de no vender producto igual en una devolucion
       $("#cantidadProductoNuevo").blur(function(){

@@ -19,15 +19,15 @@
 
 
 		// generar la nota de credito con el no documento a devolver
-//		$notaCredito = $inst->generarNotaCredito($documento);
+		$notaCredito = $inst->generarNotaCredito($documento);
 
 		if($devolvido){
 			echo "<script>alert('Devolución Registrada Correctamente');";
-			echo "window.location.href='DevolucionesController.php'</script>";
+			echo "window.open('NotaCreditoDevolucionDineroController.php?noFactura=$documento','_blank');</script>";
 		}
 		else{
 			echo "<script>alert('No se guardo el registro');";
-			echo "window.location.href='DevolucionesController.php'</script>";
+			echo "window.location.href='NotaCreditoDevolucionDineroController.php?noFactura=$documento.php'</script>";
 		}
 	}
 
