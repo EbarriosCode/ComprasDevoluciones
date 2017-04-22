@@ -18,6 +18,8 @@
 			foreach($inst->getUltimaVenta() as $idVenta)
 			{
 				//echo $idVenta['max(idVenta)'];
+				$idUltimaVenta = intval($idVenta['max(idVenta)']);
+				$inst->setImpresoPagado($idUltimaVenta);
 				echo "<script>alert('Registro Guardado Correctamente');</script>";
 				echo "<script>window.open('FacturasController.php?noFactura=".$idVenta['max(idVenta)']."','_blank');</script>";
 			}

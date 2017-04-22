@@ -101,9 +101,13 @@
 		{
 			$sql = "UPDATE ventasdetalle SET impresoPagado=1 WHERE idVenta=$idVenta";
 			$stmt = Conexion::Conectar()->prepare($sql);
-			$stmt->execute();
+			
+			if($stmt->execute())
+				return true;
 
-			return $stmt->fetchAll();
+			else
+				return false;
+			
 			$stmt->close();
 		}
 
