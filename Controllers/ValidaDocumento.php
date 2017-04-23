@@ -70,11 +70,12 @@
 			                        <input type='hidden' id='idCliente' name='idCliente' value='".$item['idCliente']."'>
 			                   </div>
 			                   <div class='form-group'>
-			                        <label class='control-label col-md-3 col-sm-3 col-xs-12'>Cantidad Producto a Devolver</label>
+			                        <label class='control-label col-md-3 col-sm-3 col-xs-12'>Cantidad Producto Factura</label>
 			                        <div class='col-md-6 col-sm-6 col-xs-12'>
 			                          <input class='form-control col-md-7 col-xs-12' type='number' disabled value='".$item['cantidad']."'>
 			                        </div>
-			                      </div>";
+			                   </div>
+			                   <input type='hidden' id='cantProductoFactura' value='".$item['cantidad']."'>";
 						echo "<script>";
 								echo "$('#alerta').hide();";
 								echo "$('#alerta-factura-ya-devuelta').hide();";

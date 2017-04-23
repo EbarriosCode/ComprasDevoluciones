@@ -12,7 +12,11 @@
 		// datos para transaccion de devolucion
 		$documento = $_POST['documento-devolver'];
 		$idProducto = $_POST['idProductoDevolver'];
-		$cantidadProducto = $_POST['cantidadProducto'];
+		
+		if($_POST['cantidadProducto'] == 1)
+			$cantidadProducto = $_POST['cantidadProducto'];
+		else
+			$cantidadProducto = $_POST['cantProductoDevolver'];
 		$idCliente = $_POST['idCliente'];
 		// FIN datos para transaccion de devolucion
 

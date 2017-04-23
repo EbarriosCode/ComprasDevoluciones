@@ -209,9 +209,15 @@
                           onkeypress="return validateInput(event)" onpaste="return false">
                         </div>
                       </div>
-                      <div class="form-group text-center" id="hintFactura">
-                        
+                      <div class="form-group text-center" id="hintFactura">                        
                       </div>
+                      
+                      <div class='form-group'>
+                              <label class='control-label col-md-3 col-sm-3 col-xs-12'>Cantidad Producto a Devolver</label>
+                              <div class='col-md-6 col-sm-6 col-xs-12'>
+                                <input class='form-control col-md-7 col-xs-12' id='cantProductoDevolver' name="cantProductoDevolver" type='number' placeholder='Ingrese la cantidad del producto a devolver' />
+                              </div>
+                         </div>
                       
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="codigoProductoNuevo">Código Producto <span class="required">*</span>
@@ -371,7 +377,13 @@
               }
            });
 
+            // validación para que la cantidad ingresada no sea mayor que la que ya trae la factura a devolver
+            $("#cantProductoDevolver").blur(function(){
+              var cantProductoFactura = $("#cantProductoFactura").val();
+              var cantProductoDevolver = $("#cantProductoDevolver").val();
 
+              //alert('Cant producto factura: '+cantProductoFactura+' Cant producto devolver: '+cantProductoDevolver);
+            });
            
         });
     </script>
