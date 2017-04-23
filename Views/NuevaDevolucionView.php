@@ -28,6 +28,21 @@
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
     <style>
+      fieldset.scheduler-border {
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+    }
+
+    legend.scheduler-border {
+    width:inherit; /* Or auto */
+    padding:0 10px; /* To give a bit of padding on the left and right */
+    border-bottom:none;
+    }
+    </style>
+    <style>
       #alerta{
         display: none;
         margin-top: 10px;
@@ -201,6 +216,8 @@
                   <div class="x_content">
                     <br />
                     <form id="demo-form2" method="post" data-parsley-validate class="form-horizontal form-label-left">
+                    <fieldset class="scheduler-border">
+                     <legend class="scheduler-border"><i class="fa fa-file"></i> Datos Factura</legend>
                       <div class="form-group">                        
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="documento-devolver">No. documento-devolver-Factura <span class="required">*</span>
                         </label>
@@ -218,7 +235,10 @@
                                 <input class='form-control col-md-7 col-xs-12' id='cantProductoDevolver' name="cantProductoDevolver" type='number' placeholder='Ingrese la cantidad del producto a devolver' />
                               </div>
                          </div>
-                      
+                      </fieldset>
+                     <fieldset class="scheduler-border">
+                     <legend class="scheduler-border"><i class="fa fa-plus"></i> Producto Nuevo</legend>
+                        
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="codigoProductoNuevo">Código Producto <span class="required">*</span>
                         </label>
@@ -226,6 +246,7 @@
                           <input type="text" id="codigoProductoNuevo" name="codigoProductoNuevo" required="required" class="form-control col-md-7 col-xs-12" onchange="ajaxProductoVender(this.value)">
                         </div>
                       </div>
+                      
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="idProductoNuevo">Producto <span class="required">*</span>
                         </label>
@@ -238,6 +259,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input id="cantidadProductoNuevo" class="form-control col-md-7 col-xs-12" type="number" name="cantidadProductoNuevo" required>
                         </div>
+                         </fieldset>
                         <br>
                         
                         <div id="alerta" class="alert alert-danger col-md-6" role="alert">
@@ -262,14 +284,7 @@
                         </div>
                         
                       </div> 
-
-                      <!--<div class="form-group">
-                        <label for="costoTotal" class="control-label col-md-3 col-sm-3 col-xs-12">Total</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input disabled id="costoTotal" class="form-control col-md-7 col-xs-12" type="number" name="costoTotal">
-                        </div>
-                      </div> -->
-                      
+                     
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">                          
@@ -277,7 +292,7 @@
                           <button type="submit" class="btn btn-success" id="devolver" name="devolver-producto">Realizar Devolucion</button>
                         </div>
                       </div>
-
+                      
                     </form>
                   </div>
                 </div>
