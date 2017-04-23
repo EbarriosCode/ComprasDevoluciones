@@ -109,7 +109,7 @@ BEGIN
 		/* incrementar la existencia de la tabla productos */
 		UPDATE productos P SET P.existencia = P.existencia+@cantidad WHERE P.idProducto = @idProducto;
         
-        /* cambiar el estado de impresoPagado en la tabla ventasdetale */
+        /* cambiar el estado de impresoPagado en la tabla ventasdetalle */
 		UPDATE ventasdetalle VD SET VD.impresoPagado = 2 WHERE VD.idVenta = Documento;
     COMMIT; 
 END $$
@@ -147,3 +147,19 @@ END $$
 
 call sp_GenerarNotaCredito(28);
 drop procedure sp_GenerarNotaCredito;
+
+
+
+-- cliente que mas compra
+		    select @clienteMasCompras :=  C.nombreCliente 
+			from ventas S 
+			inner join clientes C on C.idCliente=S.idCliente
+			group by S.idCliente,C.nombreCliente
+            order by count(1) desc limit 0,1
+            
+            select * from ventas where idCliente = 10
+            
+            
+            SELECT sum(idCliente),idCliente from ventas
+            
+update ventas set fecha='2017-04-22' where idVenta = 63

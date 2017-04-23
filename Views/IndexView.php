@@ -131,7 +131,7 @@
                   <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
                   <div class="count"><?php echo count($inst->cantidadVentas()); ?></div>
                   <h3>Ventas</h3>
-                  <p>En poco tiempo</p>
+                  <p>Lorem ipsum psdea itgum rixt.</p>
                 </div>
               </div>
               <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
